@@ -1,7 +1,11 @@
-﻿namespace IT_Conference_Speaker__Service.Data.Entitiess
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace IT_Conference_Speaker__Service.Data.Entitiess
 {
     public class BaseEnity
     {
-        public int Id { get; set; }
+        [Key]
+        [Required]
+        public Guid Id { get; set; }
     }
 }

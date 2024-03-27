@@ -35,4 +35,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+//CheckDatabase.EnsureExist(app);
 app.Run();

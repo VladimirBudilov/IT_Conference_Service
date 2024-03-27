@@ -10,6 +10,9 @@ namespace IT_Conference_Speaker__Service.Data
         }
 
         public DbSet<Speaker> Speakers { get; set; }
+        public DbSet<ActivityType> ActivityType { get; set; }
+        public DbSet<SpeackerInfo> SpeackerInfo { get; set; }
+
 
     }
 }

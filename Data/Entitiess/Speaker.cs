@@ -1,9 +1,19 @@
-﻿namespace IT_Conference_Speaker__Service.Data.Entitiess
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace IT_Conference_Speaker__Service.Data.Entitiess
 {
     public class Speaker : BaseEnity
     {
-        public string Name { get; set; }
-        public string Bio { get; set; }
-        public string WebSite { get; set; }
+        [Required]
+        [ForeignKey("ActivityType")]
+        public Guid ActivityId { get; set; }
+        public ActivityType ActivityType { get; set; }
+
+        [Required]
+        [ForeignKey("SpeackerInfo")]
+        public Guid SpeackerInfoId { get; set; }
+        public SpeackerInfo SpeackerInfo { get; set; }
+
     }
 }
