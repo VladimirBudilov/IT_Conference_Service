@@ -6,12 +6,12 @@ using IT_Conference_Service.Services.Models;
 
 namespace IT_Conference_Service.Services
 {
-    public class ApplicaionService : IApplicaionService
+    public class ApplicationService : IApplicationService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ApplicaionService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ApplicationService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

@@ -2,7 +2,7 @@
 
 namespace IT_Conference_Service.Services.Interfaces
 {
-    public interface IApplicaionService
+    public interface IApplicationService
     {
         Task<ApplicationModel> CreateApplication(ApplicationModel applicationModel);
         Task DeleteApplication(Guid id);

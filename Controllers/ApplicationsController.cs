@@ -1,5 +1,6 @@
 using IT_Conference_Service.Data.Entitiess;
 using IT_Conference_Service.Services.Interfaces;
+using IT_Conference_Service.Services.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,43 @@ namespace IT_Conference_Service.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ApplicationController : ControllerBase
+    public class ApplicationsController : ControllerBase
     {
-        public readonly IApplicaionService _applicationService;
+        public readonly IApplicationService _applicationService;
+
+        public ApplicationsController(IApplicationService applicationService)
+        {
+            _applicationService = applicationService;
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Application>> GetApplication(Guid id)
+        {
+            var application = await _applicationService.GetApplication(id);
+            return Ok(application);
+        }
+
+        [HttpGet]
+        public async Task< ActionResult<IEnumerable<Application>>> GetApplications([FromQuery] DateTime? submittedAfter, [FromQuery] DateTime? unsubmittedOlder)
+        {
+            IEnumerable<ApplicationModel> applications = new List<ApplicationModel>();
+            if(submittedAfter != null && unsubmittedOlder == null)
+            {
+                applications = await _applicationService.GetAllAfterData(submittedAfter.Value);
+                return Ok(applications);
+            }
+            else if(unsubmittedOlder != null && submittedAfter == null)
+            {
+                applications = await _applicationService.GetAllUnsubmittedAfterData(unsubmittedOlder.Value);
+                return Ok(applications);
+            }
+            else
+            {
+                return BadRequest();
+            }
+            
+        }
 
         [HttpPost]
         public ActionResult<Application> CreateApplication([FromBody] Application application)
@@ -41,24 +76,10 @@ namespace IT_Conference_Service.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<Application>> GetApplications([FromQuery] DateTime? submittedAfter, [FromQuery] DateTime? unsubmittedOlder)
-        {
-            // Implement your logic to get applications based on the query parameters here
-            return Ok(new List<Application>());
-        }
-
         [HttpGet("users/{userId}/currentapplication")]
         public ActionResult<Application> GetCurrentApplicationForUser(Guid userId)
         {
             // Implement your logic to get the current application for a user here
-            return Ok(new Application());
-        }
-
-        [HttpGet("{id}")]
-        public ActionResult<Application> GetApplication(Guid id)
-        {
-            // Implement your logic to get an application by id here
             return Ok(new Application());
         }
 
