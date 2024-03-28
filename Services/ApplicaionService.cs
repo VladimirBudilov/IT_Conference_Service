@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using IT_Conference_Service.Data.Entitiess;
 using IT_Conference_Service.Data.Repositories.Interfaces;
+using IT_Conference_Service.Services.Interfaces;
 using IT_Conference_Service.Services.Models;
 
 namespace IT_Conference_Service.Services
 {
-    public class ApplicaionService
+    public class ApplicaionService : IApplicaionService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
