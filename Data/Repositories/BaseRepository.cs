@@ -37,7 +37,9 @@ namespace IT_Conference_Service.Data.Repositories
 
         public async Task<TEntity> GetByIdAsyncAsNoTracking(Guid id)
         {
-            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            var entity = await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            _context.Entry(entity).State = EntityState.Detached;
+            return entity;
         }
 
         public void Update(TEntity entity)

@@ -2,6 +2,8 @@ using IT_Conference_Service.Data.Entitiess;
 using IT_Conference_Service.Services.Interfaces;
 using IT_Conference_Service.Services.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace IT_Conference_Service.Controllers
@@ -50,9 +52,9 @@ namespace IT_Conference_Service.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Application> UpdateApplication(Guid id, [FromBody] ApplicationModel application)
+        public async Task<ActionResult<Application>> UpdateApplication(Guid id, [FromBody] ApplicationModel application)
         {
-            var model = _applicationService.UpdateApplication(id, application);
+            var model = await _applicationService.UpdateApplication(id, application);
             return Ok(model);
         }
 

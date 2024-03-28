@@ -6,4 +6,6 @@ namespace IT_Conference_Service.Data.Repositories.Interfaces
     {
 
     }
+
+
 }
