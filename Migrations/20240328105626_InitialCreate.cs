@@ -12,18 +12,6 @@ namespace IT_Conference_Service.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ActivityType",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ActivityType", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SpeackerInfo",
                 columns: table => new
                 {
@@ -38,38 +26,29 @@ namespace IT_Conference_Service.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Speakers",
+                name: "Applications",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ActivityId = table.Column<Guid>(type: "uuid", nullable: false),
-                    SpeackerInfoId = table.Column<Guid>(type: "uuid", nullable: false)
+                    AuthorId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ActivityType = table.Column<int>(type: "int", nullable: false),
+                    AuthorInfoId = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsSent = table.Column<bool>(type: "bool", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Speakers", x => x.Id);
+                    table.PrimaryKey("PK_Applications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Speakers_ActivityType_ActivityId",
-                        column: x => x.ActivityId,
-                        principalTable: "ActivityType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Speakers_SpeackerInfo_SpeackerInfoId",
-                        column: x => x.SpeackerInfoId,
+                        name: "FK_Applications_SpeackerInfo_AuthorInfoId",
+                        column: x => x.AuthorInfoId,
                         principalTable: "SpeackerInfo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Speakers_ActivityId",
-                table: "Speakers",
-                column: "ActivityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Speakers_SpeackerInfoId",
-                table: "Speakers",
+                name: "IX_Applications_AuthorInfoId",
+                table: "Applications",
                 column: "AuthorInfoId");
         }
 
@@ -77,10 +56,7 @@ namespace IT_Conference_Service.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Speakers");
-
-            migrationBuilder.DropTable(
-                name: "ActivityType");
+                name: "Applications");
 
             migrationBuilder.DropTable(
                 name: "SpeackerInfo");

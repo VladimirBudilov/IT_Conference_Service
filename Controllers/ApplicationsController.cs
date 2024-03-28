@@ -2,8 +2,6 @@ using IT_Conference_Service.Data.Entitiess;
 using IT_Conference_Service.Services.Interfaces;
 using IT_Conference_Service.Services.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace IT_Conference_Service.Controllers
@@ -19,75 +17,71 @@ namespace IT_Conference_Service.Controllers
             _applicationService = applicationService;
         }
 
-
         [HttpGet("{id}")]
-        public async Task<ActionResult<Application>> GetApplication(Guid id)
+        public async Task<ActionResult<ApplicationModel>> GetApplication(Guid id)
         {
             var application = await _applicationService.GetApplication(id);
             return Ok(application);
         }
 
         [HttpGet]
-        public async Task< ActionResult<IEnumerable<Application>>> GetApplications([FromQuery] DateTime? submittedAfter, [FromQuery] DateTime? unsubmittedOlder)
+        public async Task<ActionResult<IEnumerable<ApplicationModel>>> GetApplications([FromQuery] DateTime? submittedAfter, [FromQuery] DateTime? unsubmittedOlder)
         {
+            if (submittedAfter != null && unsubmittedOlder != null) return BadRequest();
+
             IEnumerable<ApplicationModel> applications = new List<ApplicationModel>();
-            if(submittedAfter != null && unsubmittedOlder == null)
+            if (submittedAfter != null)
             {
                 applications = await _applicationService.GetAllAfterData(submittedAfter.Value);
-                return Ok(applications);
             }
-            else if(unsubmittedOlder != null && submittedAfter == null)
+            else if (unsubmittedOlder != null)
             {
                 applications = await _applicationService.GetAllUnsubmittedAfterData(unsubmittedOlder.Value);
-                return Ok(applications);
             }
-            else
-            {
-                return BadRequest();
-            }
-            
+
+            return Ok(applications);
         }
 
         [HttpPost]
-        public ActionResult<Application> CreateApplication([FromBody] Application application)
+        public async Task< ActionResult<ApplicationModel>> CreateApplication([FromBody] ApplicationModel application)
         {
-            // Implement your logic to create an application here
-            return CreatedAtAction(nameof(GetApplication), new { id = application.Id }, application);
+            var model = await _applicationService.CreateApplication(application);
+            return CreatedAtAction(nameof(GetApplication), new { id = model.Id }, model);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Application> UpdateApplication(Guid id, [FromBody] Application application)
+        public ActionResult<Application> UpdateApplication(Guid id, [FromBody] ApplicationModel application)
         {
-            // Implement your logic to update an application here
-            return Ok(application);
+            var model = _applicationService.UpdateApplication(id, application);
+            return Ok(model);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteApplication(Guid id)
+        public async Task<IActionResult> DeleteApplication(Guid id)
         {
-            // Implement your logic to delete an application here
+            await _applicationService.DeleteApplication(id);
             return Ok();
         }
 
         [HttpPost("{id}/submit")]
-        public IActionResult SubmitApplication(Guid id)
+        public async Task<IActionResult> SubmitApplication(Guid id)
         {
-            // Implement your logic to submit an application here
+            await _applicationService.SendApplicationOnReview(id);
             return Ok();
         }
 
         [HttpGet("users/{userId}/currentapplication")]
-        public ActionResult<Application> GetCurrentApplicationForUser(Guid userId)
+        public async Task< ActionResult<Application>> GetCurrentApplicationForAuthor(Guid id)
         {
-            // Implement your logic to get the current application for a user here
+            await _applicationService.GetApplication(id);
             return Ok(new Application());
         }
 
         [HttpGet("activities")]
-        public ActionResult<IEnumerable<Activity>> GetActivities()
+        public async Task<ActionResult<IEnumerable<Activity>>> GetActivities()
         {
-            // Implement your logic to get the list of possible activities here
-            return Ok(new List<Activity>());
+            var activities = await _applicationService.GetActivities();
+            return Ok(activities);
         }
     }
 }

@@ -8,20 +8,14 @@ namespace IT_Conference_Service.Services.Mapper
     {
         public AutomapperProfile()
         {
-
-            CreateMap<ApplicationModel, Application>()
-                 .ForMember(dest => dest.ActivityType,
-                           opt => opt.MapFrom(src => Enum.Parse<ActivityTypeEnum>(src.ActivityType)))
-                 .ForMember(dest => dest.AuthorInfo,
-                                           opt => opt.MapFrom(src => new AuthorInfo
-                                           {
-                                               Id = src.AuthorId,
-                                               DescriptionForWebsie = src.Description,
-                                               Plan = src.Outline
-                                           }))
-                 .ForMember(dest => dest.AuthorId,
-                                           opt => opt.MapFrom(src => src.AuthorId))
-                 .ReverseMap();
+            CreateMap<Application, ApplicationModel>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.AuthorId))
+                .ForMember(dest => dest.ActivityType, opt => opt.MapFrom(src => src.ActivityType))
+                .ForMember(dest => dest.ActivityName, opt => opt.MapFrom(src => src.AuthorInfo.PresentationName))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.AuthorInfo.DescriptionForWebsie))
+                .ForMember(dest => dest.Outline, opt => opt.MapFrom(src => src.AuthorInfo.Plan))
+                .ReverseMap();
         }
     }
 }

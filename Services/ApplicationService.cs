@@ -19,6 +19,7 @@ namespace IT_Conference_Service.Services
 
         public async Task<ApplicationModel> CreateApplication(ApplicationModel applicationModel)
         {
+            applicationModel.Id = applicationModel.AuthorId;
             await _unitOfWork.ApplicationRepository.CreateAsync(_mapper.Map<Application>(applicationModel));
             await _unitOfWork.SaveAsync();
             return applicationModel;
@@ -28,11 +29,6 @@ namespace IT_Conference_Service.Services
         {
             var application = await _unitOfWork.ApplicationRepository.GetByIdAsync(id);
             return _mapper.Map<ApplicationModel>(application);
-        }
-
-        public async Task<IEnumerable<ApplicationModel>> GetApplications()
-        {
-            return _mapper.Map<IEnumerable<ApplicationModel>>(await _unitOfWork.ApplicationRepository.GetAllAsync());
         }
 
         public async Task<ApplicationModel> UpdateApplication(Guid id, ApplicationModel applicationModel)
@@ -48,6 +44,35 @@ namespace IT_Conference_Service.Services
         {
             var application = await _unitOfWork.ApplicationRepository.GetByIdAsync(id);
             _unitOfWork.ApplicationRepository.Delete(application);
+        }
+
+        public async Task<ApplicationModel> SendApplicationOnReview(Guid id)
+        {
+            // TODO add validation
+            var application = await _unitOfWork.ApplicationRepository.GetByIdAsync(id);
+            application.IsSent = true;
+            await _unitOfWork.SaveAsync();
+            return _mapper.Map<ApplicationModel>(application);
+        }
+
+        Task<IEnumerable<ApplicationModel>> IApplicationService.GetAllAfterData(DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<ApplicationModel>> IApplicationService.GetAllUnsubmittedAfterData(DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<ApplicationModel> IApplicationService.GetUnsubmittedApplication(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<ApplicationModel>> IApplicationService.GetActivities()
+        {
+            throw new NotImplementedException();
         }
     }
 }

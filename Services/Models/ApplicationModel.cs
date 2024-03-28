@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using IT_Conference_Service.Data.Entitiess;
+using System.Text.Json.Serialization;
 
 namespace IT_Conference_Service.Services.Models
 {
@@ -11,7 +12,7 @@ namespace IT_Conference_Service.Services.Models
         public Guid AuthorId { get; set; }
 
         [JsonPropertyName("type")]
-        public string ActivityType { get; set; }
+        public ActivityTypeEnum ActivityType { get; set; }
 
         [JsonPropertyName("name")]
         public string ActivityName { get; set; }

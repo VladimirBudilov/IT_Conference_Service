@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IT_Conference_Service.Migrations
 {
     [DbContext(typeof(ConferenceDbContext))]
-    [Migration("20240327195014_InitialCreate")]
+    [Migration("20240328105626_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,21 +25,32 @@ namespace IT_Conference_Service.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("IT_Conference_Speaker__Service.Data.Entitiess.ActivityType", b =>
+            modelBuilder.Entity("IT_Conference_Service.Data.Entitiess.Application", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Name")
+                    b.Property<int>("ActivityType")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AuthorInfoId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsSent")
+                        .HasColumnType("bool");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ActivityType");
+                    b.HasIndex("AuthorInfoId");
+
+                    b.ToTable("Applications");
                 });
 
-            modelBuilder.Entity("IT_Conference_Speaker__Service.Data.Entitiess.SpeackerInfo", b =>
+            modelBuilder.Entity("IT_Conference_Service.Data.Entitiess.AuthorInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,44 +75,15 @@ namespace IT_Conference_Service.Migrations
                     b.ToTable("SpeackerInfo");
                 });
 
-            modelBuilder.Entity("IT_Conference_Speaker__Service.Data.Entitiess.Speaker", b =>
+            modelBuilder.Entity("IT_Conference_Service.Data.Entitiess.Application", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ActivityId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AuthorInfoId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ActivityId");
-
-                    b.HasIndex("AuthorInfoId");
-
-                    b.ToTable("Speakers");
-                });
-
-            modelBuilder.Entity("IT_Conference_Speaker__Service.Data.Entitiess.Speaker", b =>
-                {
-                    b.HasOne("IT_Conference_Speaker__Service.Data.Entitiess.ActivityType", "ActivityType")
-                        .WithMany()
-                        .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("IT_Conference_Speaker__Service.Data.Entitiess.SpeackerInfo", "SpeackerInfo")
+                    b.HasOne("IT_Conference_Service.Data.Entitiess.AuthorInfo", "AuthorInfo")
                         .WithMany()
                         .HasForeignKey("AuthorInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ActivityType");
-
-                    b.Navigation("SpeackerInfo");
+                    b.Navigation("AuthorInfo");
                 });
 #pragma warning restore 612, 618
         }

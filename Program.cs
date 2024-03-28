@@ -1,7 +1,9 @@
 using IT_Conference_Service.Data;
 using IT_Conference_Service.Data.Repositories;
 using IT_Conference_Service.Data.Repositories.Interfaces;
+using IT_Conference_Service.Services;
 using IT_Conference_Service.Services.Interfaces;
+using IT_Conference_Service.Services.Mapper;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +28,9 @@ builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 builder.Services.AddScoped<ISpeackerInfoRepository, SpeackerInfoRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-builder.Services.AddScoped<IApplicationService, >
+builder.Services.AddScoped<IApplicationService, ApplicationService>();
+
+builder.Services.AddAutoMapper(typeof(AutomapperProfile));
 
 var app = builder.Build();
 
