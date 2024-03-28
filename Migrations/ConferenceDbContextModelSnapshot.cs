@@ -31,18 +31,19 @@ namespace IT_Conference_Service.Migrations
                     b.Property<int>("ActivityType")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("AuthorId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("AuthorInfoId")
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsSent")
                         .HasColumnType("bool");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorInfoId");
+                    b.HasIndex("AuthorInfoId")
+                        .IsUnique();
 
                     b.ToTable("Applications");
                 });
@@ -53,7 +54,12 @@ namespace IT_Conference_Service.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("DescriptionForWebsie")
+                    b.Property<string>("ActivityName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
                         .HasMaxLength(300)
                         .HasColumnType("text");
 
@@ -62,25 +68,26 @@ namespace IT_Conference_Service.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("text");
 
-                    b.Property<string>("PresentationName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.ToTable("SpeackerInfo");
+                    b.ToTable("AuthorInfo");
                 });
 
             modelBuilder.Entity("IT_Conference_Service.Data.Entitiess.Application", b =>
                 {
                     b.HasOne("IT_Conference_Service.Data.Entitiess.AuthorInfo", "AuthorInfo")
-                        .WithMany()
-                        .HasForeignKey("AuthorInfoId")
+                        .WithOne("Application")
+                        .HasForeignKey("IT_Conference_Service.Data.Entitiess.Application", "AuthorInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("AuthorInfo");
+                });
+
+            modelBuilder.Entity("IT_Conference_Service.Data.Entitiess.AuthorInfo", b =>
+                {
+                    b.Navigation("Application")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

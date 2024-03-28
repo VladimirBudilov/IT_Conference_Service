@@ -12,17 +12,17 @@ namespace IT_Conference_Service.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "SpeackerInfo",
+                name: "AuthorInfo",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    PresentationName = table.Column<string>(type: "text", maxLength: 100, nullable: false),
-                    DescriptionForWebsie = table.Column<string>(type: "text", maxLength: 300, nullable: true),
+                    ActivityName = table.Column<string>(type: "text", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "text", maxLength: 300, nullable: true),
                     Plan = table.Column<string>(type: "text", maxLength: 1000, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SpeackerInfo", x => x.Id);
+                    table.PrimaryKey("PK_AuthorInfo", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -30,18 +30,18 @@ namespace IT_Conference_Service.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    AuthorId = table.Column<Guid>(type: "uuid", nullable: false),
                     ActivityType = table.Column<int>(type: "int", nullable: false),
                     AuthorInfoId = table.Column<Guid>(type: "uuid", nullable: false),
-                    IsSent = table.Column<bool>(type: "bool", nullable: false)
+                    IsSent = table.Column<bool>(type: "bool", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Applications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Applications_SpeackerInfo_AuthorInfoId",
+                        name: "FK_Applications_AuthorInfo_AuthorInfoId",
                         column: x => x.AuthorInfoId,
-                        principalTable: "SpeackerInfo",
+                        principalTable: "AuthorInfo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -49,7 +49,8 @@ namespace IT_Conference_Service.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Applications_AuthorInfoId",
                 table: "Applications",
-                column: "AuthorInfoId");
+                column: "AuthorInfoId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -59,7 +60,7 @@ namespace IT_Conference_Service.Migrations
                 name: "Applications");
 
             migrationBuilder.DropTable(
-                name: "SpeackerInfo");
+                name: "AuthorInfo");
         }
     }
 }

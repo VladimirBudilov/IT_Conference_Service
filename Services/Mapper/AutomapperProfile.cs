@@ -10,10 +10,10 @@ namespace IT_Conference_Service.Services.Mapper
         {
             CreateMap<Application, ApplicationModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.AuthorId))
+                .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.AuthorInfo.Id))
                 .ForMember(dest => dest.ActivityType, opt => opt.MapFrom(src => src.ActivityType))
-                .ForMember(dest => dest.ActivityName, opt => opt.MapFrom(src => src.AuthorInfo.PresentationName))
-                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.AuthorInfo.DescriptionForWebsie))
+                .ForMember(dest => dest.ActivityName, opt => opt.MapFrom(src => src.AuthorInfo.ActivityName))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.AuthorInfo.Description))
                 .ForMember(dest => dest.Outline, opt => opt.MapFrom(src => src.AuthorInfo.Plan))
                 .ReverseMap();
         }

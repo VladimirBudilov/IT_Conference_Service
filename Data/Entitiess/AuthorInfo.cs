@@ -8,13 +8,16 @@ namespace IT_Conference_Service.Data.Entitiess
         [Required]
         [Column(TypeName = "text")]
         [MaxLength(100)]
-        public string PresentationName { get; set; }
+        public string ActivityName { get; set; }
 
         [Column(TypeName = "text")]
         [MaxLength(300)]
-        public string? DescriptionForWebsie { get; set; }
+        public string? Description { get; set; }
+
         [Column(TypeName = "text")]
         [MaxLength(1000)]
         public string Plan { get; set; }
+
+        public Application Application { get; set; }
     }
 }
