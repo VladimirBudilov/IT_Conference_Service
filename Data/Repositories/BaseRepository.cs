@@ -35,6 +35,11 @@ namespace IT_Conference_Service.Data.Repositories
             return await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<TEntity> GetByIdAsyncAsNoTracking(Guid id)
+        {
+            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public void Update(TEntity entity)
         {
             _dbSet.Update(entity);

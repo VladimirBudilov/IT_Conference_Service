@@ -22,5 +22,8 @@ namespace IT_Conference_Service.Services.Models
 
         [JsonPropertyName("outline")]
         public string Outline { get; set; }
+
+        [JsonIgnore]
+        public DateTime CreatedAt { get; set; }
     }
 }

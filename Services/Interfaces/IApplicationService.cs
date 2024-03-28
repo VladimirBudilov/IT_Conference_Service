@@ -12,6 +12,6 @@ namespace IT_Conference_Service.Services.Interfaces
         Task<IEnumerable<ApplicationModel>> GetAllUnsubmittedAfterData(DateTime date);
         Task<ApplicationModel> GetUnsubmittedApplication(Guid id);
         Task<ApplicationModel> GetApplication(Guid id);
-        Task<IEnumerable<ApplicationModel>> GetActivities();
+        Task<IEnumerable<ActivityModel>> GetActivities();
     }
 }

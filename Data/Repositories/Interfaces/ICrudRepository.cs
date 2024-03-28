@@ -6,6 +6,7 @@
         void Update(T entity);
         void Delete(T entity);
         Task<T> GetByIdAsync(Guid id);
+        Task<T> GetByIdAsyncAsNoTracking(Guid id);
         Task<IEnumerable<T>> GetAllAsync();
     }
 }
