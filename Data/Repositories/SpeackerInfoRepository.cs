@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IT_Conference_Service.Data.Repositories
 {
-    public class SpeackerInfoRepository : BaseRepository<AuthorInfo>, ISpeackerInfoRepository
+    public class SpeackerInfoRepository : BaseRepository<ApplicationInfo>, ISpeackerInfoRepository
     {
         public SpeackerInfoRepository(ConferenceDbContext context) : base(context)
         {

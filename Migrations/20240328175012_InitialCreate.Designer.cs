@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IT_Conference_Service.Migrations
 {
     [DbContext(typeof(ConferenceDbContext))]
-    [Migration("20240328114455_InitialCreate")]
+    [Migration("20240328175012_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -34,7 +34,10 @@ namespace IT_Conference_Service.Migrations
                     b.Property<int>("ActivityType")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("AuthorInfoId")
+                    b.Property<Guid>("ApplicationInfoId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AuthorId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -45,13 +48,13 @@ namespace IT_Conference_Service.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorInfoId")
+                    b.HasIndex("ApplicationInfoId")
                         .IsUnique();
 
-                    b.ToTable("Applications");
+                    b.ToTable("applications");
                 });
 
-            modelBuilder.Entity("IT_Conference_Service.Data.Entitiess.AuthorInfo", b =>
+            modelBuilder.Entity("IT_Conference_Service.Data.Entitiess.ApplicationInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,28 +69,28 @@ namespace IT_Conference_Service.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("text");
 
-                    b.Property<string>("Plan")
+                    b.Property<string>("Outline")
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuthorInfo");
+                    b.ToTable("application_info");
                 });
 
             modelBuilder.Entity("IT_Conference_Service.Data.Entitiess.Application", b =>
                 {
-                    b.HasOne("IT_Conference_Service.Data.Entitiess.AuthorInfo", "AuthorInfo")
+                    b.HasOne("IT_Conference_Service.Data.Entitiess.ApplicationInfo", "ApplicationInfo")
                         .WithOne("Application")
-                        .HasForeignKey("IT_Conference_Service.Data.Entitiess.Application", "AuthorInfoId")
+                        .HasForeignKey("IT_Conference_Service.Data.Entitiess.Application", "ApplicationInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AuthorInfo");
+                    b.Navigation("ApplicationInfo");
                 });
 
-            modelBuilder.Entity("IT_Conference_Service.Data.Entitiess.AuthorInfo", b =>
+            modelBuilder.Entity("IT_Conference_Service.Data.Entitiess.ApplicationInfo", b =>
                 {
                     b.Navigation("Application")
                         .IsRequired();

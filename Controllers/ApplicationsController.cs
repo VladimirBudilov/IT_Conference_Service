@@ -1,15 +1,15 @@
 using IT_Conference_Service.Data.Entitiess;
+using IT_Conference_Service.Filters;
 using IT_Conference_Service.Services.Interfaces;
 using IT_Conference_Service.Services.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace IT_Conference_Service.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [ExceptionsFilter]
     public class ApplicationsController : ControllerBase
     {
         public readonly IApplicationService _applicationService;
@@ -49,9 +49,9 @@ namespace IT_Conference_Service.Controllers
         }
 
         [HttpPost]
-        public async Task< ActionResult<ApplicationModel>> CreateApplication([FromBody] ApplicationModel application)
+        public async Task<ActionResult<ApplicationModel>> CreateApplication([FromBody] ApplicationModel application)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest("The model is not valid.");
             }
@@ -89,7 +89,7 @@ namespace IT_Conference_Service.Controllers
         }
 
         [HttpGet("users/{userId}/currentapplication")]
-        public async Task< ActionResult<Application>> GetCurrentApplicationForAuthor(Guid id)
+        public async Task<ActionResult<Application>> GetCurrentApplicationForAuthor(Guid id)
         {
             if (id == Guid.Empty)
             {

@@ -12,7 +12,7 @@ namespace IT_Conference_Service.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AuthorInfo",
+                name: "application_info",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -22,34 +22,35 @@ namespace IT_Conference_Service.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AuthorInfo", x => x.Id);
+                    table.PrimaryKey("PK_application_info", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Applications",
+                name: "applications",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ActivityType = table.Column<int>(type: "int", nullable: false),
-                    AuthorInfoId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsSent = table.Column<bool>(type: "bool", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ApplicationInfoId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Applications", x => x.Id);
+                    table.PrimaryKey("PK_applications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Applications_AuthorInfo_AuthorInfoId",
-                        column: x => x.AuthorInfoId,
-                        principalTable: "AuthorInfo",
+                        name: "FK_applications_application_info_ApplicationInfoId",
+                        column: x => x.ApplicationInfoId,
+                        principalTable: "application_info",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Applications_AuthorInfoId",
-                table: "Applications",
-                column: "AuthorInfoId",
+                name: "IX_applications_ApplicationInfoId",
+                table: "applications",
+                column: "ApplicationInfoId",
                 unique: true);
         }
 
@@ -57,10 +58,10 @@ namespace IT_Conference_Service.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Applications");
+                name: "applications");
 
             migrationBuilder.DropTable(
-                name: "AuthorInfo");
+                name: "application_info");
         }
     }
 }

@@ -3,20 +3,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IT_Conference_Service.Data.Entitiess
 {
-    public class AuthorInfo : BaseEnity
+    [Table("application_info")]
+    public class ApplicationInfo : BaseEnity
     {
         [Required]
-        [Column(TypeName = "text")]
+        [Column("activity_name", TypeName = "text")]
         [MaxLength(100)]
         public string ActivityName { get; set; }
 
-        [Column(TypeName = "text")]
+        [Column("description", TypeName = "text")]
         [MaxLength(300)]
         public string? Description { get; set; }
 
-        [Column(TypeName = "text")]
+        [Column("outline", TypeName = "text")]
         [MaxLength(1000)]
-        public string Plan { get; set; }
+        public string Outline { get; set; }
 
         public Application Application { get; set; }
     }

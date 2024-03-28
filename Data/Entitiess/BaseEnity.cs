@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IT_Conference_Service.Data.Entitiess
 {
@@ -6,6 +7,7 @@ namespace IT_Conference_Service.Data.Entitiess
     {
         [Key]
         [Required]
+        [Column("id", TypeName = "uniqueidentifier")]
         public Guid Id { get; set; }
     }
 }

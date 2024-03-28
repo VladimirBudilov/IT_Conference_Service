@@ -3,22 +3,30 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IT_Conference_Service.Data.Entitiess
 {
+    [Table("applications")]
     public class Application : BaseEnity
     {
         [Required]
-        [Column(TypeName = "int")]
+        [Column("activity_type", TypeName = "int")]
+
         public ActivityTypeEnum ActivityType { get; set; }
 
         [Required]
-        [ForeignKey(nameof(AuthorInfo))]
-        public Guid AuthorInfoId { get; set; }
-        public AuthorInfo AuthorInfo { get; set; }
+        [Column("author_id", TypeName = "uniqueidentifier")]
+        public Guid AuthorId { get; set; }
 
         [Required]
-        [Column(TypeName = "bool")]
+        [Column("is_sent", TypeName = "bool")]
         public bool IsSent { get; set; } = false;
 
         [Required]
+        [Column("created_at", TypeName = "datetime2")]
         public DateTime CreatedAt { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(ApplicationInfo))]
+        [Column("application_info_id", TypeName = "uniqueidentifier")]
+        public Guid ApplicationInfoId { get; set; }
+        public ApplicationInfo ApplicationInfo { get; set; }
     }
 }
