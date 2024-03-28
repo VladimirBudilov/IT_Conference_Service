@@ -10,18 +10,23 @@ namespace IT_Conference_Service.Data.Repositories
         {
         }
 
-        public async Task<Application> GetFullDataByIdAsNoTrackingAsync(Guid id)
+        public async Task<Application> GetByIdWithDetailsAsNoTrackingAsync(Guid id)
         {
             return await _dbSet.AsNoTracking().Where(x => x.AuthorInfoId == id)
                          .Include(x => x.AuthorInfo)
                          .FirstOrDefaultAsync();
         }
 
-        public async Task<Application> GetFullDataByIdAsync(Guid id)
+        public async Task<Application> GetByIdWithDetaiksAsync(Guid id)
         {
             return await _dbSet.Where(x => x.AuthorInfoId == id)
                          .Include(x => x.AuthorInfo)
                          .FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Application>> GetAllWithDetailsAsync()
+        {
+            return await _dbSet.Include(x => x.AuthorInfo).ToListAsync();
         }
     }
 }

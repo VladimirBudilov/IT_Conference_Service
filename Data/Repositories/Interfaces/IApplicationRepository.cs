@@ -4,7 +4,8 @@ namespace IT_Conference_Service.Data.Repositories.Interfaces
 {
     public interface IApplicationRepository : ICrudRepository<Application>
     {
-        Task<Application> GetFullDataByIdAsync(Guid id);
-        Task<Application> GetFullDataByIdAsNoTrackingAsync(Guid id);
+        Task<Application> GetByIdWithDetaiksAsync(Guid id);
+        Task<Application> GetByIdWithDetailsAsNoTrackingAsync(Guid id);
+        Task<IEnumerable<Application>> GetAllWithDetailsAsync();
     }
 }
