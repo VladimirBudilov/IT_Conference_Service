@@ -22,6 +22,10 @@ namespace IT_Conference_Service.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ApplicationModel>> GetApplication(Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                return BadRequest("The id must not be empty.");
+            }
             var application = await _applicationService.GetApplication(id);
             return Ok(application);
         }
@@ -29,7 +33,7 @@ namespace IT_Conference_Service.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ApplicationModel>>> GetApplications([FromQuery] DateTime? submittedAfter, [FromQuery] DateTime? unsubmittedOlder)
         {
-            if (submittedAfter != null && unsubmittedOlder != null) return BadRequest();
+            if (submittedAfter != null && unsubmittedOlder != null) return BadRequest("You can't use both parameters at the same time. Please use only one of them.");
 
             IEnumerable<ApplicationModel> applications = new List<ApplicationModel>();
             if (submittedAfter != null)
@@ -47,6 +51,10 @@ namespace IT_Conference_Service.Controllers
         [HttpPost]
         public async Task< ActionResult<ApplicationModel>> CreateApplication([FromBody] ApplicationModel application)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest("The model is not valid.");
+            }
             var model = await _applicationService.CreateApplication(application);
             return CreatedAtAction(nameof(GetApplication), new { id = model.Id }, model);
         }
@@ -54,6 +62,10 @@ namespace IT_Conference_Service.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<Application>> UpdateApplication(Guid id, [FromBody] ApplicationModel application)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("The model is not valid.");
+            }
             var model = await _applicationService.UpdateApplication(id, application);
             return Ok(model);
         }
@@ -68,6 +80,10 @@ namespace IT_Conference_Service.Controllers
         [HttpPost("{id}/submit")]
         public async Task<IActionResult> SubmitApplication(Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                return BadRequest("The id must not be empty.");
+            }
             await _applicationService.SendApplicationOnReview(id);
             return Ok();
         }
@@ -75,6 +91,10 @@ namespace IT_Conference_Service.Controllers
         [HttpGet("users/{userId}/currentapplication")]
         public async Task< ActionResult<Application>> GetCurrentApplicationForAuthor(Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                return BadRequest("The id must not be empty.");
+            }
             await _applicationService.GetApplication(id);
             return Ok(new Application());
         }

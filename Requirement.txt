@@ -1,4 +1,0 @@
-validation:
-1) 1 draft for user
-2) cant create application without userID
-3) during creating/updating at least 1 field + 2 punct
