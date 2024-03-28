@@ -1,9 +1,16 @@
-﻿namespace IT_Conference_Service.Data.Entitiess
+﻿using System.Runtime.Serialization;
+
+namespace IT_Conference_Service.Data.Entitiess
 {
     public enum ActivityTypeEnum
     {
+        [EnumMember(Value = "Lecture")]
         Lecture,
-        Workshop, 
-        Discussion 
+
+        [EnumMember(Value = "Workshop")]
+        Workshop,
+
+        [EnumMember(Value = "Discussion")]
+        Discussion
     }
 }

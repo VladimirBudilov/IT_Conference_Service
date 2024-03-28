@@ -70,7 +70,7 @@ namespace IT_Conference_Service.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Speakers_SpeackerInfoId",
                 table: "Speakers",
-                column: "SpeakerInfoId");
+                column: "AuthorInfoId");
         }
 
         /// <inheritdoc />

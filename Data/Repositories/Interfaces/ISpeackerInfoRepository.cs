@@ -2,7 +2,7 @@
 
 namespace IT_Conference_Service.Data.Repositories.Interfaces
 {
-    public interface ISpeackerInfoRepository : ICrudRepository<SpeakerInfo>
+    public interface ISpeackerInfoRepository : ICrudRepository<AuthorInfo>
     {
 
     }

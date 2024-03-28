@@ -3,9 +3,9 @@
     public interface ICrudRepository<T>
     {
         Task CreateAsync(T entity);
-        Task Update(T entity);
-        Task Delete(T entity);
-        Task<T> GetByIdAsync(int id);
+        void Update(T entity);
+        void Delete(T entity);
+        Task<T> GetByIdAsync(Guid id);
         Task<IEnumerable<T>> GetAllAsync();
     }
 }

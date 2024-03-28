@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IT_Conference_Service.Data.Repositories
 {
-    public abstract class BaseRepository<T> : ICrudRepository<TEntity>
+    public abstract class BaseRepository<TEntity> : ICrudRepository<TEntity> where TEntity : BaseEnity
     {
         protected readonly ConferenceDbContext _context;
         protected readonly DbSet<TEntity> _dbSet;
@@ -30,9 +30,9 @@ namespace IT_Conference_Service.Data.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public async Task<TEntity> GetByIdAsync(Guid id)
         {
-            return await _dbSet.FirstOrDefaultAsync(x => x.Id.Equals(id));
+            return await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public void Update(TEntity entity)

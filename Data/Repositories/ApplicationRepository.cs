@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IT_Conference_Service.Data.Repositories
 {
-    public class ApplicationRepository : IApplicationRepository
+    public class ApplicationRepository : BaseRepository<Application>, IApplicationRepository
     {
-
+        public ApplicationRepository(ConferenceDbContext context) : base(context)
+        {
+        }
     }
 }

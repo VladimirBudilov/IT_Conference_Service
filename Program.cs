@@ -1,4 +1,6 @@
 using IT_Conference_Service.Data;
+using IT_Conference_Service.Data.Repositories;
+using IT_Conference_Service.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,9 @@ builder.Services.AddDbContext<ConferenceDbContext>(opts =>
     opts.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDbConnection"));
 });
 
+builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
+builder.Services.AddScoped<ISpeackerInfoRepository, SpeackerInfoRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IT_Conference_Service.Data.Entitiess
 {
-    public class SpeakerInfo : BaseEnity
+    public class AuthorInfo : BaseEnity
     {
         [Required]
         [Column(TypeName = "text")]

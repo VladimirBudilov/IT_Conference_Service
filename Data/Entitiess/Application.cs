@@ -6,19 +6,19 @@ namespace IT_Conference_Service.Data.Entitiess
     public class Application : BaseEnity
     {
         [Required]
-        public Guid UserId { get; set; }
+        public Guid AuthorId { get; set; }
 
         [Required]
         [Column(TypeName = "int")]
-        public ActivityTypeEnum Name { get; set; }
+        public ActivityTypeEnum ActivityType { get; set; }
 
         [Required]
-        [ForeignKey("SpeakerInfo")]
-        public Guid SpeakerInfoId { get; set; }
-        public SpeakerInfo SpeackerInfo { get; set; }
+        [ForeignKey("AuthorInfo")]
+        public Guid AuthorInfoId { get; set; }
+        public AuthorInfo AuthorInfo { get; set; }
 
         [Required]
         [Column(TypeName = "bool")]
-        public bool IsAccepted { get; set; }
+        public bool IsSent { get; set; } = false;
     }
 }

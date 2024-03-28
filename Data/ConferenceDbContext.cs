@@ -10,7 +10,7 @@ namespace IT_Conference_Service.Data
         }
 
         public DbSet<Application> Applications { get; set; }
-        public DbSet<SpeakerInfo> SpeackerInfo { get; set; }
+        public DbSet<AuthorInfo> SpeackerInfo { get; set; }
 
 
     }

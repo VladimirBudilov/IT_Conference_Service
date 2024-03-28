@@ -73,14 +73,14 @@ namespace IT_Conference_Service.Migrations
                     b.Property<Guid>("ActivityId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("SpeakerInfoId")
+                    b.Property<Guid>("AuthorInfoId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ActivityId");
 
-                    b.HasIndex("SpeakerInfoId");
+                    b.HasIndex("AuthorInfoId");
 
                     b.ToTable("Speakers");
                 });
@@ -95,7 +95,7 @@ namespace IT_Conference_Service.Migrations
 
                     b.HasOne("IT_Conference_Speaker__Service.Data.Entitiess.SpeackerInfo", "SpeackerInfo")
                         .WithMany()
-                        .HasForeignKey("SpeakerInfoId")
+                        .HasForeignKey("AuthorInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
