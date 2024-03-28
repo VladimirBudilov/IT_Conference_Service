@@ -1,4 +1,4 @@
-﻿namespace IT_Conference_Speaker__Service.Data.Entitiess
+﻿namespace IT_Conference_Service.Data.Entitiess
 {
     public enum ActivityTypeEnum
     {

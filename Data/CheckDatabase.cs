@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace IT_Conference_Speaker__Service.Data
+namespace IT_Conference_Service.Data
 {
     public static class CheckDatabase
     {

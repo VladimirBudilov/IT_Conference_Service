@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace IT_Conference_Speaker__Service.Migrations
+namespace IT_Conference_Service.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -70,7 +70,7 @@ namespace IT_Conference_Speaker__Service.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Speakers_SpeackerInfoId",
                 table: "Speakers",
-                column: "SpeackerInfoId");
+                column: "SpeakerInfoId");
         }
 
         /// <inheritdoc />

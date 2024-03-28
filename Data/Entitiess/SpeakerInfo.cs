@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace IT_Conference_Speaker__Service.Data.Entitiess
+namespace IT_Conference_Service.Data.Entitiess
 {
-    public class SpeackerInfo : BaseEnity
+    public class SpeakerInfo : BaseEnity
     {
         [Required]
         [Column(TypeName = "text")]

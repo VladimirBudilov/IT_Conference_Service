@@ -1,7 +1,7 @@
-﻿using IT_Conference_Speaker__Service.Data.Entitiess;
+﻿using IT_Conference_Service.Data.Entitiess;
 using Microsoft.EntityFrameworkCore;
 
-namespace IT_Conference_Speaker__Service.Data
+namespace IT_Conference_Service.Data
 {
     public class ConferenceDbContext : DbContext
     {
@@ -9,9 +9,8 @@ namespace IT_Conference_Speaker__Service.Data
         {
         }
 
-        public DbSet<Speaker> Speakers { get; set; }
-        public DbSet<ActivityType> ActivityType { get; set; }
-        public DbSet<SpeackerInfo> SpeackerInfo { get; set; }
+        public DbSet<Application> Applications { get; set; }
+        public DbSet<SpeakerInfo> SpeackerInfo { get; set; }
 
 
     }

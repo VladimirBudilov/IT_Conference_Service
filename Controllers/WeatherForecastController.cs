@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace IT_Conference_Speaker__Service.Controllers
+namespace IT_Conference_Service.Controllers
 {
     [ApiController]
     [Route("[controller]")]

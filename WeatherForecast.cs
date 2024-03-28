@@ -1,4 +1,4 @@
-namespace IT_Conference_Speaker__Service
+namespace IT_Conference_Service
 {
     public class WeatherForecast
     {

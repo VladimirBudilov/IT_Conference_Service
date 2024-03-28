@@ -1,4 +1,4 @@
-using IT_Conference_Speaker__Service.Data;
+using IT_Conference_Service.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
