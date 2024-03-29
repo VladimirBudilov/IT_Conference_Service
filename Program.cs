@@ -1,10 +1,10 @@
 using IT_Conference_Service.Data;
 using IT_Conference_Service.Data.Repositories;
 using IT_Conference_Service.Data.Repositories.Interfaces;
+using IT_Conference_Service.Helpers.Validation;
 using IT_Conference_Service.Services.Interfaces;
 using IT_Conference_Service.Services.Mapper;
 using IT_Conference_Service.Services.Models;
-using IT_Conference_Service.Validation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;

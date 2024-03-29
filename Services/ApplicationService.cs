@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using IT_Conference_Service.Data.Entitiess;
 using IT_Conference_Service.Data.Repositories.Interfaces;
+using IT_Conference_Service.Helpers.Validation;
 using IT_Conference_Service.Services.Interfaces;
-using IT_Conference_Service.Validation;
 
 namespace IT_Conference_Service.Services.Models
 {

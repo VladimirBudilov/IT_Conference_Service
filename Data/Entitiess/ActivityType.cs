@@ -1,33 +1,19 @@
-﻿using System.Reflection;
-using System.Runtime.Serialization;
+﻿using System.ComponentModel;
 
 namespace IT_Conference_Service.Data.Entitiess
 {
     public enum ActivityType
     {
-        [EnumMember(Value = "Lecture")]
+        [Description("Lecture")]
         Lecture,
 
-        [EnumMember(Value = "Workshop")]
+        [Description("Workshop")]
         Workshop,
 
-        [EnumMember(Value = "Discussion")]
+        [Description("Discussion")]
         Discussion,
 
-        [EnumMember(Value = "")]
+        [Description("")]
         None
-
-    }
-
-    public static class ActivityTypeExtensions
-    {
-        public static string ToEnumMemberString(this ActivityType activityType)
-        {
-            var type = typeof(ActivityType);
-            var memberInfos = type.GetMember(activityType.ToString());
-            var enumMemberAttribute = memberInfos[0].GetCustomAttribute<EnumMemberAttribute>(false);
-
-            return enumMemberAttribute?.Value ?? activityType.ToString();
-        }
     }
 }

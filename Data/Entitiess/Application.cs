@@ -6,9 +6,7 @@ namespace IT_Conference_Service.Data.Entitiess
     [Table("applications")]
     public class Application : BaseEnity
     {
-        [Required]
-        [Column("activity_type", TypeName = "int")]
-        public ActivityType ActivityType { get; set; }
+        
 
         [Required]
         [Column("author_id")]
@@ -27,6 +25,7 @@ namespace IT_Conference_Service.Data.Entitiess
 
         [Required]
         [Column("application_info_id")]
+        [ForeignKey(nameof(ApplicationInfo))]
         public Guid ApplicationInfoId { get; set; }
         public ApplicationInfo ApplicationInfo { get; set; }
     }

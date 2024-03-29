@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
-using IT_Conference_Service.Validation;
+using IT_Conference_Service.Helpers.Validation;
 
-namespace IT_Conference_Service.Filters
+namespace IT_Conference_Service.Helpers.Filters
 {
     [AttributeUsage(AttributeTargets.All)]
     public sealed class ExceptionsFilterAttribute : Attribute, IAsyncExceptionFilter

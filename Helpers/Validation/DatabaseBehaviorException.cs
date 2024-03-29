@@ -1,4 +1,4 @@
-﻿namespace IT_Conference_Service.Validation
+﻿namespace IT_Conference_Service.Helpers.Validation
 {
     public class DatabaseBehaviorException : Exception
     {

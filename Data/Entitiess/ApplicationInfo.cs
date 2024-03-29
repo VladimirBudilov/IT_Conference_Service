@@ -7,6 +7,10 @@ namespace IT_Conference_Service.Data.Entitiess
     public class ApplicationInfo : BaseEnity
     {
         [Required]
+        [Column("activity_type", TypeName = "int")]
+        public ActivityType ActivityType { get; set; }
+
+        [Required]
         [Column("activity_name", TypeName = "text")]
         [MaxLength(100)]
         public string ActivityName { get; set; }
@@ -15,6 +19,7 @@ namespace IT_Conference_Service.Data.Entitiess
         [MaxLength(300)]
         public string? Description { get; set; }
 
+        [Required]
         [Column("outline", TypeName = "text")]
         [MaxLength(1000)]
         public string Outline { get; set; }
