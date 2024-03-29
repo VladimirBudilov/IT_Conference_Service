@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IT_Conference_Service.Migrations
 {
     [DbContext(typeof(ConferenceDbContext))]
-    [Migration("20240329122349_InitialCreate")]
+    [Migration("20240329182400_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -31,10 +31,6 @@ namespace IT_Conference_Service.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
-
-                    b.Property<int>("ActivityType")
-                        .HasColumnType("int")
-                        .HasColumnName("activity_type");
 
                     b.Property<Guid>("ApplicationInfoId")
                         .HasColumnType("uuid")
@@ -76,6 +72,10 @@ namespace IT_Conference_Service.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("text")
                         .HasColumnName("activity_name");
+
+                    b.Property<int>("ActivityType")
+                        .HasColumnType("int")
+                        .HasColumnName("activity_type");
 
                     b.Property<string>("Description")
                         .HasMaxLength(300)

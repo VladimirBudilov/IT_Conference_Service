@@ -21,7 +21,7 @@ namespace IT_Conference_Service.Services.Models
 
         public async Task<ApplicationModel> GetApplication(Guid id)
         {
-            await _validator.ApplicationNotExist(new ApplicationModel { Id = id });
+            await _validator.ApplicationNotExist(new ApplicationModel { Id = id }, "Can't get such application. It does not exist");
             var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetaiksAsync(id);
             return _mapper.Map<ApplicationModel>(application);
         }
@@ -90,7 +90,7 @@ namespace IT_Conference_Service.Services.Models
                 throw new ServiceBehaviorException("You don't have unsent application.");
             }
             var model = _mapper.Map<ApplicationModel>(application);
-            await _validator.ApplicationWasSent(model);
+            await _validator.ApplicationWasSent(model, "This application was sent");
             return model;
         }
 

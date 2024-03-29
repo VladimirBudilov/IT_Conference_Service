@@ -1,9 +1,8 @@
 using IT_Conference_Service.Data.Entitiess;
-using IT_Conference_Service.Filters;
+using IT_Conference_Service.Helpers.Filters;
 using IT_Conference_Service.Services.Interfaces;
 using IT_Conference_Service.Services.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace IT_Conference_Service.Controllers
 {
@@ -78,7 +77,7 @@ namespace IT_Conference_Service.Controllers
         /// <param name="id">The unique identifier of the application to update</param>
         /// <param name="application">The updated application model (type can be only Lecture, Workshop or Discussion)</param>
         [HttpPut("{id}")]
-        public async Task<ActionResult<Application>> UpdateApplication(Guid id, [FromBody] ApplicationModel application)
+        public async Task<ActionResult<ApplicationModel>> UpdateApplication(Guid id, [FromBody] ApplicationModel application)
         {
             if (!ModelState.IsValid) return BadRequest("The model is not valid.");
 
@@ -116,7 +115,7 @@ namespace IT_Conference_Service.Controllers
         /// <param name="userId">The unique identifier of the user</param>
         /// <returns>Returns the current application for the specified user</returns>
         [HttpGet("users/{userId}/currentapplication")]
-        public async Task<ActionResult<Application>> GetCurrentApplicationForAuthor(Guid userId)
+        public async Task<ActionResult<ApplicationModel>> GetCurrentApplicationForAuthor(Guid userId)
         {
             if (userId == Guid.Empty) return BadRequest("The id must not be empty.");
 

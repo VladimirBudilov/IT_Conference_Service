@@ -29,10 +29,6 @@ namespace IT_Conference_Service.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<int>("ActivityType")
-                        .HasColumnType("int")
-                        .HasColumnName("activity_type");
-
                     b.Property<Guid>("ApplicationInfoId")
                         .HasColumnType("uuid")
                         .HasColumnName("application_info_id");
@@ -73,6 +69,10 @@ namespace IT_Conference_Service.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("text")
                         .HasColumnName("activity_name");
+
+                    b.Property<int>("ActivityType")
+                        .HasColumnType("int")
+                        .HasColumnName("activity_type");
 
                     b.Property<string>("Description")
                         .HasMaxLength(300)

@@ -16,6 +16,7 @@ namespace IT_Conference_Service.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    activity_type = table.Column<int>(type: "int", nullable: false),
                     activity_name = table.Column<string>(type: "text", maxLength: 100, nullable: false),
                     description = table.Column<string>(type: "text", maxLength: 300, nullable: true),
                     outline = table.Column<string>(type: "text", maxLength: 1000, nullable: false)
@@ -30,7 +31,6 @@ namespace IT_Conference_Service.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    activity_type = table.Column<int>(type: "int", nullable: false),
                     author_id = table.Column<Guid>(type: "uuid", nullable: false),
                     is_sent = table.Column<bool>(type: "boolean", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp(0) without time zone", nullable: false),
