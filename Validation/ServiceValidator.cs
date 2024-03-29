@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using IT_Conference_Service.Data.Entitiess;
 using IT_Conference_Service.Data.Repositories.Interfaces;
 using IT_Conference_Service.Services.Models;
 
@@ -80,8 +79,7 @@ namespace IT_Conference_Service.Validation
         {
             if (string.IsNullOrEmpty(applicationModel.ActivityName)
                 && string.IsNullOrEmpty(applicationModel.Description)
-                && string.IsNullOrEmpty(applicationModel.Outline)
-                && applicationModel.ActivityType == ActivityType.None.ToEnumMemberString())
+                && string.IsNullOrEmpty(applicationModel.Outline))
             {
                 throw new ServiceBehaviorException("At least one additional field must be added.");
             }
@@ -90,8 +88,7 @@ namespace IT_Conference_Service.Validation
         {
             if (string.IsNullOrEmpty(applicationModel.ActivityName)
                 || string.IsNullOrEmpty(applicationModel.Description)
-                || string.IsNullOrEmpty(applicationModel.Outline)
-                || applicationModel.ActivityType == ActivityType.None.ToEnumMemberString())
+                || string.IsNullOrEmpty(applicationModel.Outline))
             {
                 throw new ServiceBehaviorException("All fields shuold be added.");
             }

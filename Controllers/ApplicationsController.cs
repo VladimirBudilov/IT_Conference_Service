@@ -9,7 +9,7 @@ namespace IT_Conference_Service.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    //[ExceptionsFilter]
+    [ExceptionsFilter]
     public class ApplicationsController : ControllerBase
     {
         public readonly IApplicationService _applicationService;
@@ -62,7 +62,7 @@ namespace IT_Conference_Service.Controllers
         /// <summary>
         /// Creates a new application.
         /// </summary>
-        /// <param name="application">The application model to create</param>
+        /// <param name="application">The application model to create (type can be only Lecture, Workshop or Discussion)</param>
         [HttpPost]
         public async Task<ActionResult<ApplicationModel>> CreateApplication([FromBody] ApplicationModel application)
         {
@@ -76,7 +76,7 @@ namespace IT_Conference_Service.Controllers
         /// Updates an existing application.
         /// </summary>
         /// <param name="id">The unique identifier of the application to update</param>
-        /// <param name="application">The updated application model</param>
+        /// <param name="application">The updated application model (type can be only Lecture, Workshop or Discussion)</param>
         [HttpPut("{id}")]
         public async Task<ActionResult<Application>> UpdateApplication(Guid id, [FromBody] ApplicationModel application)
         {
