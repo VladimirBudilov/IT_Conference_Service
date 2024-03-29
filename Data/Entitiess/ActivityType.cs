@@ -12,7 +12,11 @@ namespace IT_Conference_Service.Data.Entitiess
         Workshop,
 
         [EnumMember(Value = "Discussion")]
-        Discussion
+        Discussion,
+
+        [EnumMember(Value = "")]
+        None
+
     }
 
     public static class ActivityTypeExtensions

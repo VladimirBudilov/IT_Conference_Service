@@ -41,6 +41,9 @@ namespace IT_Conference_Service.Services.Models
         public string Outline { get; set; }
 
         [JsonIgnore]
-        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+
+        [JsonIgnore]
+        public DateTime SentAt { get; set; }
     }
 }

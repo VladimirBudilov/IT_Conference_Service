@@ -30,7 +30,7 @@ namespace IT_Conference_Service.Services.Models
         {
             await _validator.ApplicationCanBeCreated(applicationModel);
             applicationModel.Id = Guid.NewGuid();
-            applicationModel.CreatedAt = DateTime.Now.ToUniversalTime();
+            applicationModel.UpdatedAt = DateTime.Now;
             await _unitOfWork.ApplicationRepository.CreateAsync(_mapper.Map<Application>(applicationModel));
             await _unitOfWork.SaveAsync();
             return applicationModel;
@@ -40,7 +40,7 @@ namespace IT_Conference_Service.Services.Models
         {
             applicationModel.Id = id;
             await _validator.ApplicationCanBeUpdated(applicationModel);
-            applicationModel.CreatedAt = DateTime.Now.ToUniversalTime();
+            applicationModel.UpdatedAt = DateTime.Now;
             var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetailsAsNoTrackingAsync(id);
             var info = application.ApplicationInfo;
             _mapper.Map(applicationModel, application);
@@ -64,6 +64,7 @@ namespace IT_Conference_Service.Services.Models
             await _validator.ApplicationCaBeSant(new ApplicationModel { Id = id });
             var application = await _unitOfWork.ApplicationRepository.GetByIdAsync(id);
             application.IsSent = true;
+            application.SentAt = DateTime.Now;
             await _unitOfWork.SaveAsync();
             return _mapper.Map<ApplicationModel>(application);
         }
@@ -71,13 +72,13 @@ namespace IT_Conference_Service.Services.Models
         public async Task<IEnumerable<ApplicationModel>> GetAllAfterData(DateTime date)
         {
             var applications = await _unitOfWork.ApplicationRepository.GetAllWithDetailsAsync();
-            return _mapper.Map<IEnumerable<ApplicationModel>>(applications.Where(x => x.CreatedAt > date));
+            return _mapper.Map<IEnumerable<ApplicationModel>>(applications.Where(x => x.IsSent && x.SentAt > date));
         }
 
         public async Task<IEnumerable<ApplicationModel>> GetAllUnsubmittedBeforeData(DateTime date)
         {
             var applications = await _unitOfWork.ApplicationRepository.GetAllWithDetailsAsync();
-            return _mapper.Map<IEnumerable<ApplicationModel>>(applications.Where(x => x.IsSent == false && x.CreatedAt < date));
+            return _mapper.Map<IEnumerable<ApplicationModel>>(applications.Where(x => !x.IsSent && x.UpdatedAt < date));
         }
 
         public async Task<ApplicationModel> GetUnsubmittedApplication(Guid authorId)

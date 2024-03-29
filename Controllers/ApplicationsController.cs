@@ -9,7 +9,7 @@ namespace IT_Conference_Service.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [ExceptionsFilter]
+    //[ExceptionsFilter]
     public class ApplicationsController : ControllerBase
     {
         public readonly IApplicationService _applicationService;

@@ -41,13 +41,17 @@ namespace IT_Conference_Service.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("author_id");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
                     b.Property<bool>("IsSent")
                         .HasColumnType("boolean")
                         .HasColumnName("is_sent");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("timestamp(0)")
+                        .HasColumnName("sent_at");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp(0)")
+                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 

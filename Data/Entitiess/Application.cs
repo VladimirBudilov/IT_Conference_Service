@@ -8,7 +8,6 @@ namespace IT_Conference_Service.Data.Entitiess
     {
         [Required]
         [Column("activity_type", TypeName = "int")]
-
         public ActivityType ActivityType { get; set; }
 
         [Required]
@@ -20,8 +19,11 @@ namespace IT_Conference_Service.Data.Entitiess
         public bool IsSent { get; set; } = false;
 
         [Required]
-        [Column("created_at")]
-        public DateTime CreatedAt { get; set; }
+        [Column("updated_at", TypeName = "timestamp(0)")]
+        public DateTime UpdatedAt { get; set; }
+        
+        [Column("sent_at", TypeName = "timestamp(0)")]
+        public DateTime SentAt { get; set; }
 
         [Required]
         [ForeignKey(nameof(ApplicationInfo))]

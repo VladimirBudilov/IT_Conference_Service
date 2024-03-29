@@ -33,7 +33,8 @@ namespace IT_Conference_Service.Migrations
                     activity_type = table.Column<int>(type: "int", nullable: false),
                     author_id = table.Column<Guid>(type: "uuid", nullable: false),
                     is_sent = table.Column<bool>(type: "boolean", nullable: false),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp(0) without time zone", nullable: false),
+                    sent_at = table.Column<DateTime>(type: "timestamp(0) without time zone", nullable: false),
                     application_info_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>

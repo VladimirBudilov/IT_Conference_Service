@@ -15,7 +15,6 @@ namespace IT_Conference_Service.Data
             }
 
             context.Database.EnsureCreated();
-
         }
 
     }

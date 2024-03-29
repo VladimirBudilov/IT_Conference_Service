@@ -55,11 +55,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();
 
-//CheckDatabase.EnsureExist(app);
+CheckDatabase.EnsureExist(app);
 app.Run();
