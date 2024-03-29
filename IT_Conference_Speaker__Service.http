@@ -1,6 +1,0 @@
-@IT_Conference_Speaker__Service_HostAddress = http://localhost:5174
-
-GET {{IT_Conference_Speaker__Service_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

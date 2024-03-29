@@ -12,6 +12,7 @@ namespace IT_Conference_Service.Services.Interfaces
         Task<IEnumerable<ApplicationModel>> GetAllUnsubmittedBeforeData(DateTime date);
         Task<ApplicationModel> GetUnsubmittedApplication(Guid id);
         Task<ApplicationModel> GetApplication(Guid id);
+        Task <IEnumerable<ApplicationModel>> GetApplications();
         Task<IEnumerable<ActivityModel>> GetActivities();
     }
 }

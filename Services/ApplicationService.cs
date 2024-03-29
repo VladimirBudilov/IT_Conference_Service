@@ -97,5 +97,10 @@ namespace IT_Conference_Service.Services.Models
             var applications = await _unitOfWork.ApplicationRepository.GetAllWithDetailsAsync();
             return _mapper.Map<IEnumerable<ActivityModel>>(applications);
         }
+
+        public async Task<IEnumerable<ApplicationModel>> GetApplications()
+        {
+            return _mapper.Map<IEnumerable<ApplicationModel>>(await _unitOfWork.ApplicationRepository.GetAllWithDetailsAsync());
+        }
     }
 }

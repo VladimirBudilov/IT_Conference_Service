@@ -19,6 +19,10 @@ namespace IT_Conference_Service.Controllers
             _applicationService = applicationService;
         }
 
+        /// <summary>
+        /// Retrieves a specific application by unique id.
+        /// </summary>
+        /// <param name="id">The unique identifier of the application</param>
         [HttpGet("{id}")]
         public async Task<ActionResult<ApplicationModel>> GetApplication(Guid id)
         {
@@ -28,6 +32,11 @@ namespace IT_Conference_Service.Controllers
             return Ok(application);
         }
 
+        /// <summary>
+        /// Retrieves all applications, optionally filtered by submission date.
+        /// </summary>
+        /// <param name="submittedAfter">Optional parameter to filter applications submitted after this date</param>
+        /// <param name="unsubmittedOlder">Optional parameter to filter applications unsubmitted older than this date</param>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ApplicationModel>>> GetApplications([FromQuery] DateTime? submittedAfter, [FromQuery] DateTime? unsubmittedOlder)
         {
@@ -42,10 +51,18 @@ namespace IT_Conference_Service.Controllers
             {
                 applications = await _applicationService.GetAllUnsubmittedBeforeData(unsubmittedOlder.Value);
             }
+            else
+            {
+                applications = await _applicationService.GetApplications();
+            }
 
             return Ok(applications);
         }
 
+        /// <summary>
+        /// Creates a new application.
+        /// </summary>
+        /// <param name="application">The application model to create</param>
         [HttpPost]
         public async Task<ActionResult<ApplicationModel>> CreateApplication([FromBody] ApplicationModel application)
         {
@@ -55,6 +72,11 @@ namespace IT_Conference_Service.Controllers
             return CreatedAtAction(nameof(GetApplication), new { id = model.Id }, model);
         }
 
+        /// <summary>
+        /// Updates an existing application.
+        /// </summary>
+        /// <param name="id">The unique identifier of the application to update</param>
+        /// <param name="application">The updated application model</param>
         [HttpPut("{id}")]
         public async Task<ActionResult<Application>> UpdateApplication(Guid id, [FromBody] ApplicationModel application)
         {
@@ -64,6 +86,10 @@ namespace IT_Conference_Service.Controllers
             return Ok(model);
         }
 
+        /// <summary>
+        /// Deletes an application.
+        /// </summary>
+        /// <param name="id">The unique identifier of the application to delete</param>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteApplication(Guid id)
         {
@@ -71,6 +97,10 @@ namespace IT_Conference_Service.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Submits an application for review.
+        /// </summary>
+        /// <param name="id">The unique identifier of the application to submit</param>
         [HttpPost("{id}/submit")]
         public async Task<IActionResult> SubmitApplication(Guid id)
         {
@@ -80,6 +110,11 @@ namespace IT_Conference_Service.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Retrieves the current application for a specific user.
+        /// </summary>
+        /// <param name="userId">The unique identifier of the user</param>
+        /// <returns>Returns the current application for the specified user</returns>
         [HttpGet("users/{userId}/currentapplication")]
         public async Task<ActionResult<Application>> GetCurrentApplicationForAuthor(Guid userId)
         {
@@ -89,8 +124,11 @@ namespace IT_Conference_Service.Controllers
             return Ok(application);
         }
 
+        /// <summary>
+        /// Retrieves all activities.
+        /// </summary>
         [HttpGet("activities")]
-        public async Task<ActionResult<IEnumerable<Activity>>> GetActivities()
+        public async Task<ActionResult<IEnumerable<ActivityModel>>> GetActivities()
         {
             var activities = await _applicationService.GetActivities();
             return Ok(activities);
