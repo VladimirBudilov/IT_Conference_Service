@@ -38,7 +38,7 @@ The system ensures that a user can only have one unsubmitted application at a ti
 
 
     dotnet build
-    dotnet run --project YourProjectName.csproj
+    dotnet run --project IT_Conference_Service.csproj
 Your application should now be running. Open a web browser and navigate to 
 http://localhost:5000
 to access it.
