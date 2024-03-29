@@ -40,7 +40,7 @@ namespace IT_Conference_Service.Controllers
             }
             else if (unsubmittedOlder != null)
             {
-                applications = await _applicationService.GetAllUnsubmittedAfterData(unsubmittedOlder.Value);
+                applications = await _applicationService.GetAllUnsubmittedBeforeData(unsubmittedOlder.Value);
             }
 
             return Ok(applications);
@@ -81,11 +81,11 @@ namespace IT_Conference_Service.Controllers
         }
 
         [HttpGet("users/{userId}/currentapplication")]
-        public async Task<ActionResult<Application>> GetCurrentApplicationForAuthor(Guid id)
+        public async Task<ActionResult<Application>> GetCurrentApplicationForAuthor(Guid userId)
         {
-            if (id == Guid.Empty) return BadRequest("The id must not be empty.");
+            if (userId == Guid.Empty) return BadRequest("The id must not be empty.");
 
-            var application = await _applicationService.GetUnsubmittedApplication(id);
+            var application = await _applicationService.GetUnsubmittedApplication(userId);
             return Ok(application);
         }
 

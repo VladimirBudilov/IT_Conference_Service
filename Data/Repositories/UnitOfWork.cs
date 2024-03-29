@@ -7,7 +7,7 @@ namespace IT_Conference_Service.Data.Repositories
         private readonly ConferenceDbContext _context;
 
         public UnitOfWork(ConferenceDbContext context,
-            ISpeackerInfoRepository speackerInfoRepository
+            IAuthorInfoRepository speackerInfoRepository
             , IApplicationRepository applicationRepository
             )
         {
@@ -16,7 +16,7 @@ namespace IT_Conference_Service.Data.Repositories
             ApplicationRepository = applicationRepository;
         }
 
-        public ISpeackerInfoRepository SpeackerInfoRepository { get; private set; }
+        public IAuthorInfoRepository SpeackerInfoRepository { get; private set; }
         public IApplicationRepository ApplicationRepository { get; private set; }
   
 

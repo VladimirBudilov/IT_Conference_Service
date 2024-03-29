@@ -15,8 +15,8 @@ namespace IT_Conference_Service.Services.Models
         public Guid AuthorId { get; set; }
 
         [JsonPropertyName("type")]
-        [DataType(DataType.Text)]
         [MaxLength(100)]
+        [DataType(DataType.Text)]
         public string ActivityType { get; set; }
 
         [JsonPropertyName("name")]

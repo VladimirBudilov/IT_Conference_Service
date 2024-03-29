@@ -2,10 +2,9 @@
 using IT_Conference_Service.Data.Entitiess;
 using IT_Conference_Service.Data.Repositories.Interfaces;
 using IT_Conference_Service.Services.Interfaces;
-using IT_Conference_Service.Services.Models;
 using IT_Conference_Service.Validation;
 
-namespace IT_Conference_Service.Services
+namespace IT_Conference_Service.Services.Models
 {
     public class ApplicationService : IApplicationService
     {
@@ -18,6 +17,13 @@ namespace IT_Conference_Service.Services
             _mapper = mapper;
         }
 
+        public async Task<ApplicationModel> GetApplication(Guid id)
+        {
+            await ApplicationNotExist(new ApplicationModel { Id = id });
+            var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetaiksAsync(id);
+            return _mapper.Map<ApplicationModel>(application);
+        }
+
         public async Task<ApplicationModel> CreateApplication(ApplicationModel applicationModel)
         {
             await ApplicationCanBeCreated(applicationModel);
@@ -28,14 +34,9 @@ namespace IT_Conference_Service.Services
             return applicationModel;
         }
 
-        public async Task<ApplicationModel> GetApplication(Guid id)
-        {
-            var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetaiksAsync(id);
-            return _mapper.Map<ApplicationModel>(application);
-        }
-
         public async Task<ApplicationModel> UpdateApplication(Guid id, ApplicationModel applicationModel)
         {
+            applicationModel.Id = id;
             await ApplicationCanBeUpdated(applicationModel);
             applicationModel.CreatedAt = DateTime.Now.ToUniversalTime();
             var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetailsAsNoTrackingAsync(id);
@@ -50,15 +51,16 @@ namespace IT_Conference_Service.Services
 
         public async Task DeleteApplication(Guid id)
         {
-            var application = await _unitOfWork.ApplicationRepository.GetByIdAsync(id);
-            await ApplicationCanBeDeleted(_mapper.Map<ApplicationModel>(application));
+            await ApplicationCanBeDeleted(new ApplicationModel { Id = id });
+            var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetailsAsNoTrackingAsync(id);
             _unitOfWork.ApplicationRepository.Delete(application);
+            await _unitOfWork.SaveAsync();
         }
 
         public async Task<ApplicationModel> SendApplicationOnReview(Guid id)
         {
+            await ApplicationCaBeSant(new ApplicationModel { Id = id });
             var application = await _unitOfWork.ApplicationRepository.GetByIdAsync(id);
-            await ApplicationCaBeSant(_mapper.Map<ApplicationModel>(application));
             application.IsSent = true;
             await _unitOfWork.SaveAsync();
             return _mapper.Map<ApplicationModel>(application);
@@ -70,15 +72,19 @@ namespace IT_Conference_Service.Services
             return _mapper.Map<IEnumerable<ApplicationModel>>(applications.Where(x => x.CreatedAt > date));
         }
 
-        public async Task<IEnumerable<ApplicationModel>> GetAllUnsubmittedAfterData(DateTime date)
+        public async Task<IEnumerable<ApplicationModel>> GetAllUnsubmittedBeforeData(DateTime date)
         {
             var applications = await _unitOfWork.ApplicationRepository.GetAllWithDetailsAsync();
             return _mapper.Map<IEnumerable<ApplicationModel>>(applications.Where(x => x.IsSent == false && x.CreatedAt < date));
         }
 
-        public async Task<ApplicationModel> GetUnsubmittedApplication(Guid id)
+        public async Task<ApplicationModel> GetUnsubmittedApplication(Guid authorId)
         {
-            var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetailsAsNoTrackingAsync(id);
+            var application = await _unitOfWork.ApplicationRepository.GetDraft(authorId);
+            if (application == null)
+            {
+                throw new ServiceBehaviorException("You don't have unsent application.");
+            }
             var model = _mapper.Map<ApplicationModel>(application);
             await ApplicationWasSent(model);
             return model;
@@ -93,13 +99,13 @@ namespace IT_Conference_Service.Services
         #region Validation Methods
         private async Task ApplicationCanBeCreated(ApplicationModel applicationModel)
         {
-            //TODO check that unsant application exist -> return exception
             //TODO check that author ID added
+            //TODO check that unsant application exist -> return exception
             //TODO checkthat at least one additional field added
 
-            await ApplicationExistAndWasNotSent(applicationModel);
             AuthorIdExist(applicationModel);
             AllApplicationFieldsAreEmpty(applicationModel);
+            await AuthorHasDraft(applicationModel);
         }
         private async Task ApplicationCanBeUpdated(ApplicationModel applicationModel)
         {
@@ -109,34 +115,35 @@ namespace IT_Conference_Service.Services
 
             AuthorIdExist(applicationModel);
             AllApplicationFieldsAreEmpty(applicationModel);
-            await ApplicationWasSent(applicationModel);
             await ApplicationNotExist(applicationModel);
+            await ApplicationWasSent(applicationModel);
         }
         private async Task ApplicationCanBeDeleted(ApplicationModel applicationModel)
         {
             //TODO cant delete sent application
             //TODO cant delete unexist application
 
-            await ApplicationWasSent(applicationModel);
             await ApplicationNotExist(applicationModel);
+            await ApplicationWasSent(applicationModel);
         }
         private async Task ApplicationCaBeSant(ApplicationModel applicationModel)
         {
             // TODO cant send unexist application
             // TODO can be sent only once
             // TODO cant send application without all fields
-
             await ApplicationNotExist(applicationModel);
-            await ApplicationWasSent(applicationModel);
+            var model = await _unitOfWork.ApplicationRepository.GetByIdWithDetailsAsNoTrackingAsync(applicationModel.Id);
+            _mapper.Map(model, applicationModel);
             ApplicationHasEmptyFields(applicationModel);
+            await ApplicationWasSent(applicationModel);
         }
 
         private async Task ApplicationWasSent(ApplicationModel applicationModel)
         {
-            var application = await _unitOfWork.ApplicationRepository.GetByIdAsyncAsNoTracking(applicationModel.Id);
+            var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetailsAsNoTrackingAsync(applicationModel.Id);
             if (application.IsSent == true)
             {
-                throw new ServiceBehaviorException("Application is already sent.");
+                throw new ServiceBehaviorException("You can't update sent application");
             }
         }
         private async Task ApplicationNotExist(ApplicationModel applicationModel)
@@ -147,9 +154,9 @@ namespace IT_Conference_Service.Services
                 throw new ServiceBehaviorException("Application does not exist.");
             }
         }
-        private async Task ApplicationExistAndWasNotSent(ApplicationModel applicationModel)
+        private async Task AuthorHasDraft(ApplicationModel applicationModel)
         {
-            var application = await _unitOfWork.ApplicationRepository.GetByIdAsyncAsNoTracking(applicationModel.Id);
+            var application = await _unitOfWork.ApplicationRepository.GetDraft(applicationModel.AuthorId);
             if (application == null) return;
             if (application.IsSent == false)
             {

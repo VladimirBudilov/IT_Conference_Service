@@ -2,7 +2,7 @@
 {
     public interface IUnitOfWork
     {
-        ISpeackerInfoRepository SpeackerInfoRepository { get; }
+        IAuthorInfoRepository SpeackerInfoRepository { get; }
         IApplicationRepository ApplicationRepository { get; }
         void Save();
         Task SaveAsync();

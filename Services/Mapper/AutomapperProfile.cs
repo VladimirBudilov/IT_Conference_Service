@@ -43,12 +43,18 @@ namespace IT_Conference_Service.Services.Mapper
         {
             public T Convert(string sourceMember, ResolutionContext context)
             {
-                if (Enum.TryParse(sourceMember, true, out T result))
+                try
                 {
-                    return result;
+                    if (Enum.TryParse(sourceMember, true, out T result))
+                    {
+                        return result;
+                    }
+                    throw new ServiceBehaviorException($"Invalid activity type. Cannot convert {sourceMember} to {typeof(T).Name}");
                 }
-
-                throw new ServiceBehaviorException($"Invalid activity type. Cannot convert {sourceMember} to {typeof(T).Name}");
+                catch(Exception)
+                {
+                    throw new ServiceBehaviorException($"Invalid activity type. Cannot convert {sourceMember} to {typeof(T).Name}.");
+                }
             }
         }
     }

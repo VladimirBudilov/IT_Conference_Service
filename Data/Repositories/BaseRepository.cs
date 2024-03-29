@@ -1,5 +1,6 @@
 ﻿using IT_Conference_Service.Data.Entitiess;
 using IT_Conference_Service.Data.Repositories.Interfaces;
+using IT_Conference_Service.Validation;
 using Microsoft.EntityFrameworkCore;
 
 namespace IT_Conference_Service.Data.Repositories
@@ -32,13 +33,13 @@ namespace IT_Conference_Service.Data.Repositories
 
         public async Task<TEntity> GetByIdAsync(Guid id)
         {
-            return await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+            var entity = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+            return entity;
         }
 
         public async Task<TEntity> GetByIdAsyncAsNoTracking(Guid id)
         {
             var entity = await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-            _context.Entry(entity).State = EntityState.Detached;
             return entity;
         }
 

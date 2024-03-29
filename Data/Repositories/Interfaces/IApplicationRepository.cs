@@ -6,6 +6,7 @@ namespace IT_Conference_Service.Data.Repositories.Interfaces
     {
         Task<Application> GetByIdWithDetaiksAsync(Guid id);
         Task<Application> GetByIdWithDetailsAsNoTrackingAsync(Guid id);
+        Task<Application> GetDraft(Guid id);
         Task<IEnumerable<Application>> GetAllWithDetailsAsync();
     }
 }
