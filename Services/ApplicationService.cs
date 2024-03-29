@@ -55,6 +55,7 @@ namespace IT_Conference_Service.Services.Models
         {
             await _validator.ApplicationCanBeDeleted(new ApplicationModel { Id = id });
             var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetailsAsNoTrackingAsync(id);
+            _unitOfWork.SpeackerInfoRepository.Delete(application.ApplicationInfo);
             _unitOfWork.ApplicationRepository.Delete(application);
             await _unitOfWork.SaveAsync();
         }

@@ -14,7 +14,7 @@ namespace IT_Conference_Service.Data.Repositories
         public async Task<Application> GetByIdWithDetailsAsNoTrackingAsync(Guid id)
         {
 
-            var entity = await _dbSet.AsNoTracking().Where(x => x.ApplicationInfoId == id)
+            var entity = await _dbSet.AsNoTracking().Where(x => x.Id == id)
                          .Include(x => x.ApplicationInfo)
                          .FirstOrDefaultAsync();
             return entity;
@@ -22,7 +22,7 @@ namespace IT_Conference_Service.Data.Repositories
 
         public async Task<Application> GetByIdWithDetaiksAsync(Guid id)
         {
-            var entity = await _dbSet.Where(x => x.ApplicationInfoId == id)
+            var entity = await _dbSet.Where(x => x.Id == id)
                          .Include(x => x.ApplicationInfo)
                          .FirstOrDefaultAsync();
             return entity;

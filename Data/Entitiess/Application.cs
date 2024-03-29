@@ -26,7 +26,6 @@ namespace IT_Conference_Service.Data.Entitiess
         public DateTime SentAt { get; set; }
 
         [Required]
-        [ForeignKey(nameof(ApplicationInfo))]
         [Column("application_info_id")]
         public Guid ApplicationInfoId { get; set; }
         public ApplicationInfo ApplicationInfo { get; set; }
