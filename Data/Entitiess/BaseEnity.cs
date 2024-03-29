@@ -7,7 +7,7 @@ namespace IT_Conference_Service.Data.Entitiess
     {
         [Key]
         [Required]
-        [Column("id", TypeName = "uniqueidentifier")]
+        [Column("id")]
         public Guid Id { get; set; }
     }
 }

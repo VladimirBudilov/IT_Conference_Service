@@ -9,23 +9,23 @@ namespace IT_Conference_Service.Data.Entitiess
         [Required]
         [Column("activity_type", TypeName = "int")]
 
-        public ActivityTypeEnum ActivityType { get; set; }
+        public ActivityType ActivityType { get; set; }
 
         [Required]
-        [Column("author_id", TypeName = "uniqueidentifier")]
+        [Column("author_id")]
         public Guid AuthorId { get; set; }
 
         [Required]
-        [Column("is_sent", TypeName = "bool")]
+        [Column("is_sent", TypeName = "boolean")]
         public bool IsSent { get; set; } = false;
 
         [Required]
-        [Column("created_at", TypeName = "datetime2")]
+        [Column("created_at")]
         public DateTime CreatedAt { get; set; }
 
         [Required]
         [ForeignKey(nameof(ApplicationInfo))]
-        [Column("application_info_id", TypeName = "uniqueidentifier")]
+        [Column("application_info_id")]
         public Guid ApplicationInfoId { get; set; }
         public ApplicationInfo ApplicationInfo { get; set; }
     }

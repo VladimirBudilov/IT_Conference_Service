@@ -15,42 +15,42 @@ namespace IT_Conference_Service.Migrations
                 name: "application_info",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ActivityName = table.Column<string>(type: "text", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "text", maxLength: 300, nullable: true),
-                    Plan = table.Column<string>(type: "text", maxLength: 1000, nullable: false)
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    activity_name = table.Column<string>(type: "text", maxLength: 100, nullable: false),
+                    description = table.Column<string>(type: "text", maxLength: 300, nullable: true),
+                    outline = table.Column<string>(type: "text", maxLength: 1000, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_application_info", x => x.Id);
+                    table.PrimaryKey("PK_application_info", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "applications",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ActivityType = table.Column<int>(type: "int", nullable: false),
-                    AuthorId = table.Column<Guid>(type: "uuid", nullable: false),
-                    IsSent = table.Column<bool>(type: "bool", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ApplicationInfoId = table.Column<Guid>(type: "uuid", nullable: false)
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    activity_type = table.Column<int>(type: "int", nullable: false),
+                    author_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    is_sent = table.Column<bool>(type: "boolean", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    application_info_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_applications", x => x.Id);
+                    table.PrimaryKey("PK_applications", x => x.id);
                     table.ForeignKey(
-                        name: "FK_applications_application_info_ApplicationInfoId",
-                        column: x => x.ApplicationInfoId,
+                        name: "FK_applications_application_info_application_info_id",
+                        column: x => x.application_info_id,
                         principalTable: "application_info",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_applications_ApplicationInfoId",
+                name: "IX_applications_application_info_id",
                 table: "applications",
-                column: "ApplicationInfoId",
+                column: "application_info_id",
                 unique: true);
         }
 

@@ -6,7 +6,7 @@ namespace IT_Conference_Service.Services.Models
     public class ActivityModel
     {
         [JsonPropertyName("activity")]
-        public ActivityTypeEnum Type { get; set; }
+        public string Type { get; set; }
 
         [JsonPropertyName("description")]
         public string Description { get; set; }

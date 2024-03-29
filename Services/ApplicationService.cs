@@ -21,7 +21,7 @@ namespace IT_Conference_Service.Services
         public async Task<ApplicationModel> CreateApplication(ApplicationModel applicationModel)
         {
             await ApplicationCanBeCreated(applicationModel);
-            applicationModel.Id = applicationModel.AuthorId;
+            applicationModel.Id = Guid.NewGuid();
             applicationModel.CreatedAt = DateTime.Now.ToUniversalTime();
             await _unitOfWork.ApplicationRepository.CreateAsync(_mapper.Map<Application>(applicationModel));
             await _unitOfWork.SaveAsync();
@@ -50,7 +50,6 @@ namespace IT_Conference_Service.Services
 
         public async Task DeleteApplication(Guid id)
         {
-            
             var application = await _unitOfWork.ApplicationRepository.GetByIdAsync(id);
             await ApplicationCanBeDeleted(_mapper.Map<ApplicationModel>(application));
             _unitOfWork.ApplicationRepository.Delete(application);
@@ -58,11 +57,8 @@ namespace IT_Conference_Service.Services
 
         public async Task<ApplicationModel> SendApplicationOnReview(Guid id)
         {
-            // TODO can be sent only once
-            // TODO cant send unexist application
-            // TODO cant send application without all fields
-
             var application = await _unitOfWork.ApplicationRepository.GetByIdAsync(id);
+            await ApplicationCaBeSant(_mapper.Map<ApplicationModel>(application));
             application.IsSent = true;
             await _unitOfWork.SaveAsync();
             return _mapper.Map<ApplicationModel>(application);
@@ -103,7 +99,7 @@ namespace IT_Conference_Service.Services
 
             await ApplicationExistAndWasNotSent(applicationModel);
             AuthorIdExist(applicationModel);
-            ApplicationHasEmptyFields(applicationModel);
+            AllApplicationFieldsAreEmpty(applicationModel);
         }
         private async Task ApplicationCanBeUpdated(ApplicationModel applicationModel)
         {
@@ -112,7 +108,7 @@ namespace IT_Conference_Service.Services
             //TODO cant update unexist application
 
             AuthorIdExist(applicationModel);
-            ApplicationHasEmptyFields(applicationModel);
+            AllApplicationFieldsAreEmpty(applicationModel);
             await ApplicationWasSent(applicationModel);
             await ApplicationNotExist(applicationModel);
         }
@@ -124,10 +120,20 @@ namespace IT_Conference_Service.Services
             await ApplicationWasSent(applicationModel);
             await ApplicationNotExist(applicationModel);
         }
+        private async Task ApplicationCaBeSant(ApplicationModel applicationModel)
+        {
+            // TODO cant send unexist application
+            // TODO can be sent only once
+            // TODO cant send application without all fields
+
+            await ApplicationNotExist(applicationModel);
+            await ApplicationWasSent(applicationModel);
+            ApplicationHasEmptyFields(applicationModel);
+        }
 
         private async Task ApplicationWasSent(ApplicationModel applicationModel)
         {
-            var application = await _unitOfWork.ApplicationRepository.GetByIdAsync(applicationModel.Id);
+            var application = await _unitOfWork.ApplicationRepository.GetByIdAsyncAsNoTracking(applicationModel.Id);
             if (application.IsSent == true)
             {
                 throw new ServiceBehaviorException("Application is already sent.");
@@ -135,21 +141,22 @@ namespace IT_Conference_Service.Services
         }
         private async Task ApplicationNotExist(ApplicationModel applicationModel)
         {
-            var application = await _unitOfWork.ApplicationRepository.GetByIdAsync(applicationModel.Id);
+            var application = await _unitOfWork.ApplicationRepository.GetByIdAsyncAsNoTracking(applicationModel.Id);
             if (application == null)
             {
                 throw new ServiceBehaviorException("Application does not exist.");
             }
         }
-        private async  Task ApplicationExistAndWasNotSent(ApplicationModel applicationModel)
+        private async Task ApplicationExistAndWasNotSent(ApplicationModel applicationModel)
         {
-            var application = await _unitOfWork.ApplicationRepository.GetByIdAsync(applicationModel.Id);
+            var application = await _unitOfWork.ApplicationRepository.GetByIdAsyncAsNoTracking(applicationModel.Id);
+            if (application == null) return;
             if (application.IsSent == false)
             {
                 throw new ServiceBehaviorException("You can't create application. You have unsent draft");
             }
         }
-   
+
         private void AuthorIdExist(ApplicationModel applicationModel)
         {
             if (applicationModel.AuthorId == Guid.Empty)
@@ -157,7 +164,7 @@ namespace IT_Conference_Service.Services
                 throw new ServiceBehaviorException("Author ID must not be empty.");
             }
         }
-        private void ApplicationHasEmptyFields(ApplicationModel applicationModel)
+        private void AllApplicationFieldsAreEmpty(ApplicationModel applicationModel)
         {
             if (string.IsNullOrEmpty(applicationModel.ActivityName)
                 && string.IsNullOrEmpty(applicationModel.Description)
@@ -165,7 +172,15 @@ namespace IT_Conference_Service.Services
             {
                 throw new ServiceBehaviorException("At least one additional field must be added.");
             }
-
+        }
+        private void ApplicationHasEmptyFields(ApplicationModel applicationModel)
+        {
+            if (string.IsNullOrEmpty(applicationModel.ActivityName)
+                || string.IsNullOrEmpty(applicationModel.Description)
+                || string.IsNullOrEmpty(applicationModel.Outline))
+            {
+                throw new ServiceBehaviorException("All fields shuold be added.");
+            }
         }
         #endregion
     }

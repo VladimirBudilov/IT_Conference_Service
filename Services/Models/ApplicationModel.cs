@@ -15,9 +15,9 @@ namespace IT_Conference_Service.Services.Models
         public Guid AuthorId { get; set; }
 
         [JsonPropertyName("type")]
+        [DataType(DataType.Text)]
         [MaxLength(100)]
-        [EnumDataType(typeof(ActivityTypeEnum))]
-        public ActivityTypeEnum ActivityType { get; set; }
+        public string ActivityType { get; set; }
 
         [JsonPropertyName("name")]
         [DataType(DataType.Text)]

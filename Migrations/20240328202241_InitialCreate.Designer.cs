@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IT_Conference_Service.Migrations
 {
     [DbContext(typeof(ConferenceDbContext))]
-    [Migration("20240328175012_InitialCreate")]
+    [Migration("20240328202241_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -29,22 +29,28 @@ namespace IT_Conference_Service.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<int>("ActivityType")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("activity_type");
 
                     b.Property<Guid>("ApplicationInfoId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("application_info_id");
 
                     b.Property<Guid>("AuthorId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("author_id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<bool>("IsSent")
-                        .HasColumnType("bool");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_sent");
 
                     b.HasKey("Id");
 
@@ -58,21 +64,25 @@ namespace IT_Conference_Service.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("ActivityName")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("activity_name");
 
                     b.Property<string>("Description")
                         .HasMaxLength(300)
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
                     b.Property<string>("Outline")
                         .IsRequired()
                         .HasMaxLength(1000)
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("outline");
 
                     b.HasKey("Id");
 
