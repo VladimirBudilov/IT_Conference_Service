@@ -4,6 +4,7 @@ using IT_Conference_Service.Data.Repositories.Interfaces;
 using IT_Conference_Service.Services.Interfaces;
 using IT_Conference_Service.Services.Mapper;
 using IT_Conference_Service.Services.Models;
+using IT_Conference_Service.Validation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +30,7 @@ builder.Services.AddScoped<IAuthorInfoRepository, AuthorInfoRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
+builder.Services.AddScoped<ServiceValidator>();
 
 builder.Services.AddAutoMapper(typeof(AutomapperProfile));
 

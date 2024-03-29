@@ -10,23 +10,25 @@ namespace IT_Conference_Service.Services.Models
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ServiceValidator _validator;
 
-        public ApplicationService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ApplicationService(IUnitOfWork unitOfWork, IMapper mapper, ServiceValidator validator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _validator = validator;
         }
 
         public async Task<ApplicationModel> GetApplication(Guid id)
         {
-            await ApplicationNotExist(new ApplicationModel { Id = id });
+            await _validator.ApplicationNotExist(new ApplicationModel { Id = id });
             var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetaiksAsync(id);
             return _mapper.Map<ApplicationModel>(application);
         }
 
         public async Task<ApplicationModel> CreateApplication(ApplicationModel applicationModel)
         {
-            await ApplicationCanBeCreated(applicationModel);
+            await _validator.ApplicationCanBeCreated(applicationModel);
             applicationModel.Id = Guid.NewGuid();
             applicationModel.CreatedAt = DateTime.Now.ToUniversalTime();
             await _unitOfWork.ApplicationRepository.CreateAsync(_mapper.Map<Application>(applicationModel));
@@ -37,7 +39,7 @@ namespace IT_Conference_Service.Services.Models
         public async Task<ApplicationModel> UpdateApplication(Guid id, ApplicationModel applicationModel)
         {
             applicationModel.Id = id;
-            await ApplicationCanBeUpdated(applicationModel);
+            await _validator.ApplicationCanBeUpdated(applicationModel);
             applicationModel.CreatedAt = DateTime.Now.ToUniversalTime();
             var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetailsAsNoTrackingAsync(id);
             var info = application.ApplicationInfo;
@@ -51,7 +53,7 @@ namespace IT_Conference_Service.Services.Models
 
         public async Task DeleteApplication(Guid id)
         {
-            await ApplicationCanBeDeleted(new ApplicationModel { Id = id });
+            await _validator.ApplicationCanBeDeleted(new ApplicationModel { Id = id });
             var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetailsAsNoTrackingAsync(id);
             _unitOfWork.ApplicationRepository.Delete(application);
             await _unitOfWork.SaveAsync();
@@ -59,7 +61,7 @@ namespace IT_Conference_Service.Services.Models
 
         public async Task<ApplicationModel> SendApplicationOnReview(Guid id)
         {
-            await ApplicationCaBeSant(new ApplicationModel { Id = id });
+            await _validator.ApplicationCaBeSant(new ApplicationModel { Id = id });
             var application = await _unitOfWork.ApplicationRepository.GetByIdAsync(id);
             application.IsSent = true;
             await _unitOfWork.SaveAsync();
@@ -86,7 +88,7 @@ namespace IT_Conference_Service.Services.Models
                 throw new ServiceBehaviorException("You don't have unsent application.");
             }
             var model = _mapper.Map<ApplicationModel>(application);
-            await ApplicationWasSent(model);
+            await _validator.ApplicationWasSent(model);
             return model;
         }
 
@@ -95,100 +97,5 @@ namespace IT_Conference_Service.Services.Models
             var applications = await _unitOfWork.ApplicationRepository.GetAllWithDetailsAsync();
             return _mapper.Map<IEnumerable<ActivityModel>>(applications);
         }
-
-        #region Validation Methods
-        private async Task ApplicationCanBeCreated(ApplicationModel applicationModel)
-        {
-            //TODO check that author ID added
-            //TODO check that unsant application exist -> return exception
-            //TODO checkthat at least one additional field added
-
-            AuthorIdExist(applicationModel);
-            AllApplicationFieldsAreEmpty(applicationModel);
-            await AuthorHasDraft(applicationModel);
-        }
-        private async Task ApplicationCanBeUpdated(ApplicationModel applicationModel)
-        {
-            //TODO after update cant have less then fields id and one additional field
-            //TODO cant update sent application
-            //TODO cant update unexist application
-
-            AuthorIdExist(applicationModel);
-            AllApplicationFieldsAreEmpty(applicationModel);
-            await ApplicationNotExist(applicationModel);
-            await ApplicationWasSent(applicationModel);
-        }
-        private async Task ApplicationCanBeDeleted(ApplicationModel applicationModel)
-        {
-            //TODO cant delete sent application
-            //TODO cant delete unexist application
-
-            await ApplicationNotExist(applicationModel);
-            await ApplicationWasSent(applicationModel);
-        }
-        private async Task ApplicationCaBeSant(ApplicationModel applicationModel)
-        {
-            // TODO cant send unexist application
-            // TODO can be sent only once
-            // TODO cant send application without all fields
-            await ApplicationNotExist(applicationModel);
-            var model = await _unitOfWork.ApplicationRepository.GetByIdWithDetailsAsNoTrackingAsync(applicationModel.Id);
-            _mapper.Map(model, applicationModel);
-            ApplicationHasEmptyFields(applicationModel);
-            await ApplicationWasSent(applicationModel);
-        }
-
-        private async Task ApplicationWasSent(ApplicationModel applicationModel)
-        {
-            var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetailsAsNoTrackingAsync(applicationModel.Id);
-            if (application.IsSent == true)
-            {
-                throw new ServiceBehaviorException("You can't update sent application");
-            }
-        }
-        private async Task ApplicationNotExist(ApplicationModel applicationModel)
-        {
-            var application = await _unitOfWork.ApplicationRepository.GetByIdAsyncAsNoTracking(applicationModel.Id);
-            if (application == null)
-            {
-                throw new ServiceBehaviorException("Application does not exist.");
-            }
-        }
-        private async Task AuthorHasDraft(ApplicationModel applicationModel)
-        {
-            var application = await _unitOfWork.ApplicationRepository.GetDraft(applicationModel.AuthorId);
-            if (application == null) return;
-            if (application.IsSent == false)
-            {
-                throw new ServiceBehaviorException("You can't create application. You have unsent draft");
-            }
-        }
-
-        private void AuthorIdExist(ApplicationModel applicationModel)
-        {
-            if (applicationModel.AuthorId == Guid.Empty)
-            {
-                throw new ServiceBehaviorException("Author ID must not be empty.");
-            }
-        }
-        private void AllApplicationFieldsAreEmpty(ApplicationModel applicationModel)
-        {
-            if (string.IsNullOrEmpty(applicationModel.ActivityName)
-                && string.IsNullOrEmpty(applicationModel.Description)
-                && string.IsNullOrEmpty(applicationModel.Outline))
-            {
-                throw new ServiceBehaviorException("At least one additional field must be added.");
-            }
-        }
-        private void ApplicationHasEmptyFields(ApplicationModel applicationModel)
-        {
-            if (string.IsNullOrEmpty(applicationModel.ActivityName)
-                || string.IsNullOrEmpty(applicationModel.Description)
-                || string.IsNullOrEmpty(applicationModel.Outline))
-            {
-                throw new ServiceBehaviorException("All fields shuold be added.");
-            }
-        }
-        #endregion
     }
 }
