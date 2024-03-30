@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IT_Conference_Service.Migrations
 {
     [DbContext(typeof(ConferenceDbContext))]
-    [Migration("20240329182400_InitialCreate")]
+    [Migration("20240330102046_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -106,8 +106,7 @@ namespace IT_Conference_Service.Migrations
 
             modelBuilder.Entity("IT_Conference_Service.Data.Entitiess.ApplicationInfo", b =>
                 {
-                    b.Navigation("Application")
-                        .IsRequired();
+                    b.Navigation("Application");
                 });
 #pragma warning restore 612, 618
         }

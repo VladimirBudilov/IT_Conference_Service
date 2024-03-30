@@ -103,8 +103,7 @@ namespace IT_Conference_Service.Migrations
 
             modelBuilder.Entity("IT_Conference_Service.Data.Entitiess.ApplicationInfo", b =>
                 {
-                    b.Navigation("Application")
-                        .IsRequired();
+                    b.Navigation("Application");
                 });
 #pragma warning restore 612, 618
         }
