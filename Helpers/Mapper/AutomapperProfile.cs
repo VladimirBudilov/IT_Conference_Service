@@ -12,13 +12,13 @@ namespace IT_Conference_Service.Helpers.Mapper
             CreateMap<Application, ApplicationModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.AuthorId))
-                .ForMember(dest => dest.ActivityType, opt => opt.MapFrom<EnumDescriptionResolver>())
                 .ForMember(dest => dest.ActivityName, opt => opt.MapFrom(src => src.ApplicationInfo.ActivityName))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.ApplicationInfo.Description))
                 .ForMember(dest => dest.Outline, opt => opt.MapFrom(src => src.ApplicationInfo.Outline))
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
-                .ForMember(dest => dest.SentAt, opt => opt.MapFrom(src => src.SentAt));
+                .ForMember(dest => dest.SentAt, opt => opt.MapFrom(src => src.SentAt))
+                .AfterMap((src, dest) => dest.ActivityType = src.ApplicationInfo.ActivityType.EnumToString());
 
             CreateMap<ApplicationModel, Application>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
@@ -41,14 +41,6 @@ namespace IT_Conference_Service.Helpers.Mapper
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.Outline, opt => opt.MapFrom(src => src.Outline))
                 .AfterMap((src, dest) => dest.ActivityType = src.ActivityType.ToEnum<ActivityType>());
-        }
-
-        public class EnumDescriptionResolver : IValueResolver<Application, ApplicationModel, string>
-        {
-            public string Resolve(Application source, ApplicationModel destination, string destMember, ResolutionContext context)
-            {
-                return source.ApplicationInfo.ActivityType.EnumToString();
-            }
         }
     }
 }

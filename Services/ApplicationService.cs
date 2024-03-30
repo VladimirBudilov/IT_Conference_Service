@@ -63,7 +63,7 @@ namespace IT_Conference_Service.Services.Models
         public async Task<ApplicationModel> SendApplicationOnReview(Guid id)
         {
             await _validator.ApplicationCaBeSant(new ApplicationModel { Id = id });
-            var application = await _unitOfWork.ApplicationRepository.GetByIdAsync(id);
+            var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetaiksAsync(id);
             application.IsSent = true;
             application.SentAt = DateTime.Now;
             await _unitOfWork.SaveAsync();
@@ -97,7 +97,8 @@ namespace IT_Conference_Service.Services.Models
         public async Task<IEnumerable<ActivityModel>> GetActivities()
         {
             var applications = await _unitOfWork.ApplicationRepository.GetAllWithDetailsAsync();
-            return _mapper.Map<IEnumerable<ActivityModel>>(applications);
+            var activities = applications.Select(x => _mapper.Map<ActivityModel>(x)).Distinct();
+            return activities;
         }
 
         public async Task<IEnumerable<ApplicationModel>> GetApplications()
