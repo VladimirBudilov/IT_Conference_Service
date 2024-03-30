@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using IT_Conference_Service.Data.Entitiess;
 using IT_Conference_Service.Data.Repositories.Interfaces;
+using IT_Conference_Service.Helpers.Extensions;
 using IT_Conference_Service.Services.Models;
 
 namespace IT_Conference_Service.Helpers.Validation
@@ -18,13 +20,24 @@ namespace IT_Conference_Service.Helpers.Validation
         public async Task ApplicationCanBeCreated(ApplicationModel applicationModel)
         {
             AuthorIdExist(applicationModel, "To create an application, the author ID must not be empty.");
+            ApplicationHasCorrectType(applicationModel, "To create an application, activity type must be valid");
             AllApplicationFieldsAreEmpty(applicationModel, "To create an application, At least one additional field must be added.");
             await AuthorHasDraft(applicationModel);
         }
+
+        private void ApplicationHasCorrectType(ApplicationModel applicationModel, string message)
+        {
+            if (!applicationModel.ActivityType.CanConvertToEnum<ActivityType>(message))
+            {
+                throw new ServiceBehaviorException(message);
+            }
+        }
+
         public async Task ApplicationCanBeUpdated(ApplicationModel applicationModel)
         {
             await ApplicationNotExist(applicationModel, "You can not update unexisted application");
             AuthorIdExist(applicationModel, "To update an application, the author ID must not be empty.");
+            ApplicationHasCorrectType(applicationModel, "To update an application, activity type must be valid");
             AllApplicationFieldsAreEmpty(applicationModel, "At least one additional field must be added.");
             await ApplicationWasSent(applicationModel, "You can not update applicationw which was sent");
         }
@@ -77,18 +90,20 @@ namespace IT_Conference_Service.Helpers.Validation
         }
         public void AllApplicationFieldsAreEmpty(ApplicationModel applicationModel, string message)
         {
-            if (string.IsNullOrEmpty(applicationModel.ActivityName)
-                && string.IsNullOrEmpty(applicationModel.Description)
-                && string.IsNullOrEmpty(applicationModel.Outline))
+            if (string.IsNullOrWhiteSpace(applicationModel.ActivityName)
+                && string.IsNullOrWhiteSpace(applicationModel.Description)
+                && string.IsNullOrWhiteSpace(applicationModel.Outline)
+                && applicationModel.ActivityType.ToEnum<ActivityType>() == ActivityType.None)
             {
                 throw new ServiceBehaviorException(message);
             }
         }
         public void ApplicationHasEmptyFields(ApplicationModel applicationModel)
         {
-            if (string.IsNullOrEmpty(applicationModel.ActivityName)
-                || string.IsNullOrEmpty(applicationModel.Description)
-                || string.IsNullOrEmpty(applicationModel.Outline))
+            if (string.IsNullOrWhiteSpace(applicationModel.ActivityName)
+                || string.IsNullOrWhiteSpace(applicationModel.Description)
+                || string.IsNullOrWhiteSpace(applicationModel.Outline)
+                || applicationModel.ActivityType.ToEnum<ActivityType>() == ActivityType.None)
             {
                 throw new ServiceBehaviorException("You can not send an application before all fields should be added.");
             }

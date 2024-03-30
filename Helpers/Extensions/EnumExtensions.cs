@@ -1,4 +1,6 @@
 ﻿using IT_Conference_Service.Helpers.Validation;
+using System.ComponentModel;
+using System.Reflection;
 
 namespace IT_Conference_Service.Helpers.Extensions
 {
@@ -11,9 +13,13 @@ namespace IT_Conference_Service.Helpers.Extensions
                 throw new ServiceBehaviorException(message);
             }
 
-            if (Enum.TryParse(value, true, out T result))
+            foreach (T item in Enum.GetValues(typeof(T)))
             {
-                return result;
+                FieldInfo fi = typeof(T).GetField(item.ToString());
+                DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+                if (attributes != null && attributes[0].Description == value)
+                    return item;
             }
 
             throw new ServiceBehaviorException(message);
@@ -26,7 +32,13 @@ namespace IT_Conference_Service.Helpers.Extensions
                 throw new ServiceBehaviorException(message);
             }
 
-            return value.ToString();
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+            DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+            if (attributes != null)
+                return attributes[0].Description;
+            else
+                return value.ToString();
         }
 
         public static bool CanConvertToEnum<T>(this string value, string message) where T : struct, IConvertible
@@ -36,7 +48,16 @@ namespace IT_Conference_Service.Helpers.Extensions
                 throw new ServiceBehaviorException(message);
             }
 
-            return Enum.GetNames(typeof(T)).Any(e => e.Equals(value, StringComparison.OrdinalIgnoreCase));
+            foreach (T item in Enum.GetValues(typeof(T)))
+            {
+                FieldInfo fi = typeof(T).GetField(item.ToString());
+                DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+                if (attributes != null && attributes[0].Description == value)
+                    return true;
+            }
+
+            return false;
         }
     }
 }

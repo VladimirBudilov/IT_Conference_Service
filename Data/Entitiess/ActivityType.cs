@@ -13,7 +13,7 @@ namespace IT_Conference_Service.Data.Entitiess
         [Description("Discussion")]
         Discussion,
 
-        [Description("")]
+        [Description("None")]
         None
     }
 }

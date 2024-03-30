@@ -61,7 +61,7 @@ namespace IT_Conference_Service.Controllers
         /// <summary>
         /// Creates a new application.
         /// </summary>
-        /// <param name="application">The application model to create (type can be only Lecture, Workshop or Discussion)</param>
+        /// <param name="application">The application model to create (type can be only Lecture, Workshop, Discussion or None if not chosen)</param>
         [HttpPost]
         public async Task<ActionResult<ApplicationModel>> CreateApplication([FromBody] ApplicationModel application)
         {
@@ -75,7 +75,7 @@ namespace IT_Conference_Service.Controllers
         /// Updates an existing application.
         /// </summary>
         /// <param name="id">The unique identifier of the application to update</param>
-        /// <param name="application">The updated application model (type can be only Lecture, Workshop or Discussion)</param>
+        /// <param name="application">The updated application model (type can be only Lecture, Workshop or Discussion or None if not chosen)</param>
         [HttpPut("{id}")]
         public async Task<ActionResult<ApplicationModel>> UpdateApplication(Guid id, [FromBody] ApplicationModel application)
         {

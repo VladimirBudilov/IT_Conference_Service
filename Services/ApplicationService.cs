@@ -22,7 +22,7 @@ namespace IT_Conference_Service.Services.Models
         public async Task<ApplicationModel> GetApplication(Guid id)
         {
             await _validator.ApplicationNotExist(new ApplicationModel { Id = id }, "Can't get such application. It does not exist");
-            var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetaiksAsync(id);
+            var application = await _unitOfWork.ApplicationRepository.GetByIdWithDetailsAsNoTrackingAsync(id);
             return _mapper.Map<ApplicationModel>(application);
         }
 

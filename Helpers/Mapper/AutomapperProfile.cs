@@ -2,7 +2,6 @@
 using IT_Conference_Service.Data.Entitiess;
 using IT_Conference_Service.Helpers.Extensions;
 using IT_Conference_Service.Services.Models;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IT_Conference_Service.Helpers.Mapper
 {
@@ -34,13 +33,14 @@ namespace IT_Conference_Service.Helpers.Mapper
                 .AfterMap((src, dest) => dest.ApplicationInfo.ActivityType = src.ActivityType.ToEnum<ActivityType>());
 
             CreateMap<Application, ActivityModel>()
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.ApplicationInfo.ActivityType.ToString()))
-                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.ApplicationInfo.Description));
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.ApplicationInfo.Description))
+                .AfterMap((src, dest) => dest.Type = src.ApplicationInfo.ActivityType.EnumToString());
 
             CreateMap<ApplicationModel, ApplicationInfo>()
                 .ForMember(dest => dest.ActivityName, opt => opt.MapFrom(src => src.ActivityName))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-                .ForMember(dest => dest.Outline, opt => opt.MapFrom(src => src.Outline));
+                .ForMember(dest => dest.Outline, opt => opt.MapFrom(src => src.Outline))
+                .AfterMap((src, dest) => dest.ActivityType = src.ActivityType.ToEnum<ActivityType>());
         }
 
         public class EnumDescriptionResolver : IValueResolver<Application, ApplicationModel, string>
