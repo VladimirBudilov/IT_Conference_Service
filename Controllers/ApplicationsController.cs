@@ -41,7 +41,7 @@ namespace IT_Conference_Service.Controllers
         {
             if (submittedAfter != null && unsubmittedOlder != null) return BadRequest("You can't use both parameters at the same time. Please use only one of them.");
 
-            IEnumerable<ApplicationModel> applications = new List<ApplicationModel>();
+            IEnumerable<ApplicationModel> applications;
             if (submittedAfter != null)
             {
                 applications = await _applicationService.GetAllAfterData(submittedAfter.Value);
@@ -75,7 +75,7 @@ namespace IT_Conference_Service.Controllers
         /// Updates an existing application.
         /// </summary>
         /// <param name="id">The unique identifier of the application to update</param>
-        /// <param name="application">The updated application model (type can be only Lecture, Workshop or Discussion or None if not chosen)</param>
+        /// <param name="application">The updated application model (type can be only Lecture, Workshop or Discussion)</param>
         [HttpPut("{id}")]
         public async Task<ActionResult<ApplicationModel>> UpdateApplication(Guid id, [FromBody] ApplicationModel application)
         {

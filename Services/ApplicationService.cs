@@ -82,9 +82,9 @@ namespace IT_Conference_Service.Services.Models
             return _mapper.Map<IEnumerable<ApplicationModel>>(applications.Where(x => !x.IsSent && x.UpdatedAt < date));
         }
 
-        public async Task<ApplicationModel> GetUnsubmittedApplication(Guid authorId)
+        public async Task<ApplicationModel> GetUnsubmittedApplication(Guid id)
         {
-            var application = await _unitOfWork.ApplicationRepository.GetDraft(authorId);
+            var application = await _unitOfWork.ApplicationRepository.GetDraft(id);
             if (application == null)
             {
                 throw new ServiceBehaviorException("You don't have unsent application.");

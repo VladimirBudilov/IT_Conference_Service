@@ -34,7 +34,7 @@ namespace IT_Conference_Service.Data.Repositories
 
         public async Task<Application> GetDraft(Guid id)
         {
-            var entity = await _dbSet.AsNoTracking().Where(x => x.AuthorId == id && x.IsSent == false)
+            var entity = await _dbSet.AsNoTracking().Where(x => x.AuthorId == id && !x.IsSent)
                          .Include(x => x.ApplicationInfo)
                          .FirstOrDefaultAsync();
             return entity;

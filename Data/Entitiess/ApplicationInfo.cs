@@ -17,7 +17,7 @@ namespace IT_Conference_Service.Data.Entitiess
 
         [Column("description", TypeName = "text")]
         [MaxLength(300)]
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         [Required]
         [Column("outline", TypeName = "text")]

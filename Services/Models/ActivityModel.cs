@@ -12,7 +12,7 @@ namespace IT_Conference_Service.Services.Models
         public string Description { get; set; }
 
         #region Equality and HashCode overrides
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
             {

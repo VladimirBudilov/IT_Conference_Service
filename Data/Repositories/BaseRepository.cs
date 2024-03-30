@@ -9,7 +9,7 @@ namespace IT_Conference_Service.Data.Repositories
         protected readonly ConferenceDbContext _context;
         protected readonly DbSet<TEntity> _dbSet;
 
-        public BaseRepository(ConferenceDbContext context)
+        protected BaseRepository(ConferenceDbContext context)
         {
             _context = context;
             _dbSet = context.Set<TEntity>();
