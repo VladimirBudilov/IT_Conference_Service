@@ -1,7 +1,4 @@
-# Project Name
-
-## Description
-
+# IT conference service
 ## Description
 
 This project is an application management system that allows users to create, edit, delete, and submit applications for consideration. Each application contains the following data:
